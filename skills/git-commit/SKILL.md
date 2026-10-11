@@ -9,7 +9,7 @@ description: Prepare or create a scoped local Git commit for a user's assigned w
 
 ## Trigger & inputs
 
-Invoke when a human asks to prepare, review, or create a local Git commit. Know the **actual repository and branch**, assigned Jira Work Item (or clearly scoped independent task), authorized change boundaries, the **confirmed Subtask/Work Item identifier**, repository commit and branch conventions, intended paths/hunks, and **actual** developer checks. Editing code alone does not grant commit authority.
+Invoke when a human asks to prepare, review, or create a local Git commit. Know the **actual repository and branch**, assigned Plane/Jira/other authoritative Work Item (or clearly scoped independent task), authorized change boundaries, the **confirmed Subtask/Work Item identifier**, repository commit and branch conventions, intended paths/hunks, and **actual** developer checks. Editing code alone does not grant commit authority.
 
 ## Preconditions
 
@@ -37,7 +37,7 @@ Example messages:
 [PAY-1234] chore: update tooling configuration
 ```
 
-- **`<subtask-id>`:** use the **actual confirmed Subtask/Work Item key**, such as `PAY-1234`, from Jira or another authoritative task source. The source may be the linked issue, an explicitly supplied identifier or a reliable verified mapping from the branch. Do **not** invent a Jira key, use the literal word `subtask` by default, or silently substitute an unrelated parent Story key. If missing or ambiguous, **ask the user** which identifier to use. For non-Jira tasks, follow repository policy or ask for an approved identifier/alternative format.
+- **`<subtask-id>`:** use the **actual confirmed Subtask/Work Item key**, such as `PAY-1234`, from the actual configured tracker (Plane Cloud, Jira or another authoritative source). The source may be the linked work item, an explicitly supplied identifier or a reliable verified mapping from the branch. Do **not** invent a tracker key, use the literal word `subtask` by default, or silently substitute an unrelated parent Feature/Story key when the assigned child has its own ID. If missing or ambiguous, **ask the user** which identifier to use. For work without a tracked item, follow repository policy or ask for an approved identifier/alternative format.
 - **`<type>`:** choose from the change's actual intent: `feat` (behavior), `fix` (bug), `refactor` (no behavior change), `test`, `docs`, or `chore` (maintenance). Follow the repository's permitted type set if it differs. Do not label a behavioral change `refactor` merely to avoid release rules.
 - **`<short imperative summary>`:** describe the **specific committed diff**, not the entire parent Story. Prefer a short, clear English imperative phrase; do not include placeholders, misleading claims, secrets, trailing full stop or unsupported “done”/“verified” claims.
 - **Optional body:** add a blank line and concise motivation, relevant contract/migration implications or issue link when the repo requires it. Never put sensitive company data into the public `puen-stack` repository.
