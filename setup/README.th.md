@@ -11,15 +11,17 @@
 ```bash
 git clone https://github.com/puennaja/puen-stack.git
 cd puen-stack
-node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --yes
+node scripts/setup.mjs
 node scripts/setup.mjs --check --doctor
 ```
 
-ค่าเริ่มต้นติดตั้ง **Skills ทั้งหมดให้ Codex + Claude แบบ User Scope** โดย Link จาก Source กลางไปที่ `~/.agents/skills` และ `~/.claude/skills` (Windows ใช้ Junction) สามารถรันซ้ำได้ ถ้ามี Skill ชื่อเดิมแต่เนื้อหาไม่ตรงกัน **Script จะหยุดโดยไม่ทับหรือลบไฟล์** ต้องตรวจ Plan ก่อนเลือก `--yes`; หากรันแบบ Interactive โดยไม่ใช้ `--yes` จะถามยืนยัน
+เมื่อรัน **โดยไม่ใส่ Arguments จะเข้า Interactive Wizard** ให้เลือก **Global หรือ Project → Codex / Claude / Both → Skills ที่ต้องการ → Link หรือ Copy** จากนั้นแสดง **Dry-run Preview ของ Path ที่จะติดตั้งจริง** และถามยืนยันก่อนเขียนไฟล์ ค่าเริ่มต้นคือ **Global + Both + All Skills + Link** ไปยัง `~/.agents/skills` และ `~/.claude/skills` (Windows ใช้ Junction) ส่วน Project ต้องระบุ Path ที่มีจริง และค่าเริ่มต้นเป็น **Copy** ถ้ากดยกเลิกจะไม่เขียนไฟล์
+
+กรณี CLI/Automation ใช้ `--dry-run`, `--scope project --project <path> --agent codex --yes` หรือ `--check` ได้เหมือนเดิม **ถ้าไม่มี Arguments แต่ไม่ใช่ Interactive Terminal ระบบจะไม่ติดตั้งเอง** Script รันซ้ำได้และ **ไม่ทับ Skill ที่มีอยู่**, ไม่ Login GitLab, ไม่เปิดสิทธิ์ Agent/GitLab, ไม่ Push, ไม่เปิด MR หรือ Deploy
 
 ```bash
 node scripts/setup.mjs --list
+node scripts/setup.mjs --dry-run
 node scripts/setup.mjs --agent codex --skill git-commit --dry-run
 node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
 node --test scripts/setup.test.mjs
