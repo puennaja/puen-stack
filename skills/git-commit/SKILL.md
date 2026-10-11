@@ -5,7 +5,7 @@ description: Prepare or create a scoped local Git commit for a user's assigned w
 
 # git-commit — v0.1 Draft
 
-**Purpose:** Safe, reviewable **local commits**, never remote publication. This skill is a procedure, not permission. See [Thai companion](./SKILL.th.md), [synthetic tests](./TESTS.md), and the [Accepted Implementation Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
+**Purpose:** Safe, reviewable **local commits**, never remote publication. This skill is a procedure, not permission. See [synthetic tests](./TESTS.md) and the [Accepted Implementation Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
 
 ## Trigger & inputs
 
