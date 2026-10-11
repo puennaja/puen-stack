@@ -99,12 +99,14 @@ try{
     }
   }else console.log('Project-scoped Skills: run node scripts/setup.mjs inside puen-stack after choosing project path.');
   if(host==='GitHub'){
-    console.log('GitHub auth status: '+(cmd('gh',['auth','status']).ok?'authenticated':'unverified'));
-    if(cmd('gh',['--version']).ok)await maybe('gh',['auth','login'],'Interactive GitHub authentication (only if needed)');
+    const ghAuthorized=cmd('gh',['auth','status']).ok;
+    console.log('GitHub auth status: '+(ghAuthorized?'authenticated':'unverified'));
+    if(!ghAuthorized&&cmd('gh',['--version']).ok)await maybe('gh',['auth','login'],'Interactive GitHub authentication (only if needed)');
     else console.log('Install GitHub CLI (gh) separately using official instructions.');
   }else if(host==='GitLab'){
-    console.log('GitLab auth status: '+(cmd('glab',['auth','status']).ok?'authenticated':'unverified'));
-    if(cmd('glab',['--version']).ok)await maybe('glab',['auth','login'],'Interactive GitLab authentication (only if needed)');
+    const glabAuthorized=cmd('glab',['auth','status']).ok;
+    console.log('GitLab auth status: '+(glabAuthorized?'authenticated':'unverified'));
+    if(!glabAuthorized&&cmd('glab',['--version']).ok)await maybe('glab',['auth','login'],'Interactive GitLab authentication (only if needed)');
     else console.log('Install GitLab CLI (glab) separately using official instructions.');
   }
   if(tracker==='Plane Cloud'&&configAgent){
