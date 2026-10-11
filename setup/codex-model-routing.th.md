@@ -55,6 +55,9 @@ model_reasoning_effort = "high"
 
 ## 3. ใช้ตาม Stage
 
+**สถานะจากผู้ใช้:** เพิ่ม Codex Config แล้ว และติดตั้ง Skills แบบ Global แล้ว; ไม่ต้องทำสองงานนี้ซ้ำ ถ้ายังไม่ยืนยัน Profile อื่นให้ Smoke Test เฉพาะส่วนที่เหลือ
+
+
 | ประเภทงาน | คำสั่ง |
 | --- | --- |
 | งานเล็ก/Documentation | `codex --profile fast` |
@@ -64,13 +67,26 @@ model_reasoning_effort = "high"
 
 ตรวจ Model/Effort ใน `/model` หลังเปิดทุก Profile ก่อนนับว่า Setup ผ่าน **อย่าใช้ Astra โดยอัตโนมัติ**
 
-## 4. Pilot Smoke Test
+## 4. Git Remote: GitHub / GitLab
+
+Version Control คือ **Git**. สำหรับ Pilot ปัจจุบันใช้ **GitHub**; อนาคตเลือก GitLab ได้ตาม Remote จริง.
+
+```bash
+git remote -v
+git branch --show-current
+```
+
+- GitHub: ใช้ **Draft Pull Request (PR)** ผ่าน GitHub CLI (`gh`) หรือ Connector ที่ตรวจสิทธิ์แล้ว; **ไม่ใช้ `gitlab-draft-mr`**
+- GitLab: ใช้ **Draft Merge Request (MR)** ผ่าน `gitlab-draft-mr` หรือเครื่องมือที่ตรวจแล้ว
+- ทั้งคู่: ต้องขออนุญาตแยกก่อน Push และเปิด Draft PR/MR, ตรวจ Base/Target จริง, ห้าม Auto Merge
+
+## 5. Pilot Smoke Test
 
 1. เปิด Codex จาก **Repo Product ที่ได้รับอนุญาต** ไม่ใช่ Home; ตรวจ `pwd`, `git status`, `git branch --show-current`
 2. Run Profile `fast`; ยืนยัน Model ใน `/model` แล้วสั่งอ่านไฟล์สั้นๆ โดย **ไม่แก้ไฟล์**
 3. Run Profile `build`; ตรวจ Model และสร้าง Plan แบบ Read-only
 4. เปิด Profile `review` ใน **Session ใหม่**; ตรวจว่า Read-only จริง โดยไม่แก้ Git/Files
 5. Run `/status` ก่อน/หลังเท่าที่แสดงได้ และบันทึกเวอร์ชัน, Model, Effort, Result, Evidence และ Failure ใน `pilot-projects/docs`
-6. ทำ Plane Cloud Setup แยกตาม [Guide](./plane-cloud.th.md), ติดตั้ง Skills ด้วย `node scripts/setup.mjs`, และทำตาม Human Gates ใน Playbook
+6. ทำ Plane Cloud Setup แยกตาม [Guide](./plane-cloud.th.md); **ถ้า Skills ถูกติดตั้งแบบ Global แล้วให้ทดสอบการเรียกก่อน ไม่ต้องติดตั้งซ้ำ** และทำตาม Human Gates ใน Playbook
 
 หาก Profile/Model/Effort ไม่รองรับ อย่าเดาว่าทดสอบผ่าน ให้บันทึก `Blocked` แล้วแก้ Configuration ตามคู่มือ Codex เวอร์ชันที่ติดตั้ง
