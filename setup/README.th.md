@@ -1,0 +1,126 @@
+# puen-stack — คู่มือ Setup Codex + Claude Code (v0.1 Draft)
+
+**เป้าหมาย:** ให้ Codex และ Claude ใช้ **Skill Source เดียวกัน** จาก `puen-stack` แล้วตั้งค่าการเข้าถึง Git/GitLab แบบ **Least Privilege** คู่มือนี้ต้องให้เจ้าของเครื่องทำเอง **ไม่ใช่ Script ที่รันเองหรืออนุมัติ Permission อัตโนมัติ**
+
+[English](./README.md) · [รายการ Skills](../skills/README.md) · [Accepted Workflows — puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
+
+## 0. เตรียมก่อน
+
+- ใช้กับเครื่องและ Repository ที่ได้รับอนุญาตเท่านั้น ตรวจ Company Policy, Branch Protection, Reviewers, Secrets และข้อห้ามการติดตั้ง Software
+- ตรวจ Version: `git --version`, `codex --version`, `claude --version`, `glab --version` ติดตั้ง/อัปเดตตาม Official Docs ก่อน
+- **Skill ไม่ใช่ Permission:** Read, Edit, Run Tests, Network, Git Commit, Git Push, Create Draft MR, Merge, Deploy เป็นคนละ Action/Approval
+- อย่าดึง Skills เวอร์ชันใหม่เข้าเครื่อง Sensitive Project โดยไม่ Review/Pinned Version — Repo Public ที่เปลี่ยน Skill อาจเปลี่ยน Instruction ของ AI ได้
+- Repo ที่เปิด VS Code คนละหน้าต่างไม่ใช่ Shared Workspace AI ห้ามอ้างว่ามองเห็น Sibling Repo
+- ใช้ `AGENTS.md` เป็น Project Policy Source ที่ต้องอ่าน ตรวจด้วยว่า Version ของ Claude/Codex ที่ติดตั้งอ่านไฟล์นี้ได้จริงหรือไม่ ถ้าไม่แน่ใจให้ **สั่ง Agent อ่าน `AGENTS.md` ตรง ๆ** ไม่บังคับสร้าง `CLAUDE.md`
+
+## 1. Clone `puen-stack` เป็น Source กลาง
+
+ตัวอย่าง macOS/Linux (ปรับ Folder ได้ตามเครื่อง):
+
+```bash
+mkdir -p "$HOME/src"
+git clone https://github.com/puennaja/puen-stack.git "$HOME/src/puen-stack"
+cd "$HOME/src/puen-stack"
+git status --short --branch
+```
+
+ถ้ามี Repo อยู่แล้ว **ห้าม Clone ทับ** ตรวจ Local Changes ก่อน `git pull --ff-only` ด้วยตัวเอง หากใช้กับงานจริงให้ Review/Pinned Commit ก่อนอัปเดต Skills
+
+## 2. ติดตั้ง Skill ให้ Codex และ Claude อ่าน Source เดียวกัน
+
+Canonical Skill อยู่ `puen-stack/skills/<name>/SKILL.md`; ภาษาไทยเป็น `SKILL.th.md` คู่กัน ไม่สร้าง Skill ซ้ำอีกตัว
+
+**macOS/Linux:** ตรวจว่า Destination ยังไม่ใช้งาน ก่อนสร้าง Symlink
+
+```bash
+mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
+for skill in git-commit gitlab-draft-mr; do
+  ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.agents/skills/$skill"
+  ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.claude/skills/$skill"
+done
+```
+
+**Windows PowerShell:** หลัง Clone เข้า `$HOME\src\puen-stack` และตรวจว่าปลายทางไม่มี Existing Skill ซ้ำ:
+
+```powershell
+$source = Join-Path $HOME 'src\puen-stack\skills'
+$codexSkills = Join-Path $HOME '.agents\skills'
+$claudeSkills = Join-Path $HOME '.claude\skills'
+New-Item -ItemType Directory -Force -Path $codexSkills, $claudeSkills | Out-Null
+foreach ($name in @('git-commit', 'gitlab-draft-mr')) {
+  $target = Join-Path $source $name
+  foreach ($root in @($codexSkills, $claudeSkills)) {
+    $link = Join-Path $root $name
+    if (-not (Test-Path -LiteralPath $target)) { throw "Skill source missing: $target" }
+    if (Test-Path -LiteralPath $link) { throw "Review existing destination; do not overwrite: $link" }
+    New-Item -ItemType Junction -Path $link -Target $target | Out-Null
+  }
+}
+```
+
+Junction เหมาะกับ Folder ภายในเครื่อง/Filesystem ที่รองรับ Symlink อาจต้องเปิด Developer Mode หรือใช้สิทธิ์ Admin ตาม Windows Settings **อย่าลบ Existing Destination ทิ้งอัตโนมัติ** ถ้า Environment/Sandbox ตาม Link ไปไม่ได้ ให้ใช้ Manual Copy ที่มีขั้นตอน Sync/Review ชัดเจน
+
+Codex อ่าน `~/.agents/skills/<skill>/SKILL.md` ส่วน Claude อ่าน `~/.claude/skills/<skill>/SKILL.md` ต้องทดสอบ **Version จริงของ Agent** ว่า Skill ถูกค้นพบ เพราะ Agent ที่รัน Cloud อาจไม่เห็น Folder ส่วนตัวบนเครื่อง
+
+## 3. Sandbox และ Permission Prompts
+
+**Codex:** เปิด `~/.codex/config.toml` บนเครื่องเอง แล้วพิจารณาค่าเริ่มต้นนี้ (Merge กับ Config เดิม):
+
+```toml
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+```
+
+นี่เป็นค่า Prompt/Sandbox ไม่ใช่ Approval ของ Jira หรือ GitLab ในบาง Version เขียน `.git` หรือเข้าถึง Network อาจต้องขอ Escalation เพิ่ม แม้เป็น Workspace-write **ห้ามเปิด `danger-full-access`, `--yolo`, หรือ `approval_policy = "never"` เพื่อข้ามปัญหา Permission**
+
+**Claude Code:** เปิด `~/.claude/settings.json` และ Merge กับ Settings เดิม ห้าม Replace ทุกค่า:
+
+```json
+{
+  "permissions": {
+    "defaultMode": "default",
+    "ask": [
+      "Bash(git push *)",
+      "Bash(glab mr create *)"
+    ]
+  }
+}
+```
+
+Rules ข้างบน **ช่วยให้ถามก่อนรันคำสั่งที่ Match เท่านั้น** ไม่ใช่การป้องกันการสั่งคำสั่งเทียบเท่าผ่าน Script/Alias/Tool อื่น ต้องบังคับสิทธิ์ผ่าน GitLab/Protected Branch/Policy และ Human Gate จริง **อย่าเปิดกว้างทุก Bash Command เพื่อความสะดวก**
+
+## 4. GitLab Self-managed / GitLab.com
+
+**ห้ามส่ง Token ลง Chat, Skills, AGENTS.md หรือ Git Public** ใช้ OS Keyring/Credential Manager และหลัก Least Privilege/Expiry ตาม Admin Policy การสร้าง MR ผ่าน CLI อาจต้องใช้ API Scope ที่ค่อนข้างกว้าง จึงควรขอเฉพาะ Credential ที่องค์กรอนุญาต
+
+1. เช็ก `git remote -v` ว่าเป็น Host ของ **Repo งานจริง** ไม่ใช่ GitHub ของ `puen-stack`
+2. ให้เจ้าของเครื่อง Authenticate ผ่าน `glab` แบบ Interactive กับ **Host จริง** ตัวอย่าง:
+   ```bash
+   glab auth login --hostname gitlab.example.com
+   glab auth status
+   ```
+   ตรวจ Account/Host/Project Permissions/Protected Branch ก่อนใช้จริง `git push` อาจใช้ SSH/HTTPS Credentials คนละชุดกับ `glab` API Auth
+3. ทดสอบ **Read-only** ด้วย `glab mr list` หรือ `glab mr view` ภายใน Repo ที่มีสิทธิ์ก่อน
+4. **Push ต้องมี Scoped Publish Approval แยก** จาก Implementation Gate; **Create Draft MR ทุกอันต้องมี Human Confirm Source/Target/Body แยก**; Mark Ready/Merge/Production ยังคง Human-only
+5. ลอง Create Draft MR **เฉพาะ Sandbox GitLab Project ที่ Human อนุญาตชัดเจน** หลัง Mock Test ผ่าน
+
+## 5. Permission Matrix
+
+| Action | แนวทางเริ่มต้น | สิ่งที่ต้องมีจริง |
+| --- | --- | --- |
+| Read / Git History | Read-only ใน Workspace | Workspace Access + Sandbox |
+| Edit | Scoped Files | Assigned Work Item / Repo Permission |
+| Run Tests | Safe Target เท่านั้น | Execution-safety Preflight |
+| Local Commit | Confirmed Files/Hunks | Human Request + Work Item Policy/Checks |
+| Git Push | **ขออนุญาตแยก** | Scoped Human Publish Approval + Git Rights |
+| Create Draft MR | **Human Confirm ทุก MR** | Project/Source/Target/Description Approval + GitLab Auth |
+| Mark Ready / Merge | **Human Only** | GitLab Reviewer / Branch Policy |
+| Production Deploy / Recovery | **ไม่ให้ AI Permission ใน v0.1** | Human Release / Incident Policy แยก |
+
+## 6. Validation ก่อนใช้กับโปรเจกต์จริง
+
+ให้ตรวจว่า Skill ถูกค้นพบใน Codex/Claude และอ่านไฟล์ `puen-stack` จริง ทดลอง [Commit Test Scenarios](../skills/git-commit/TESTS.md) และ [Draft MR Test Scenarios](../skills/gitlab-draft-mr/TESTS.md) ใน **Disposable Synthetic Repo + Mock GitLab API** ต้องเห็นว่า Agent หยุดก่อน Unrelated Changes, Push/MR ที่ไม่อนุมัติ, Wrong Host/Target และ Failed Required Checks แล้วบันทึกผลจริงว่า Pass/Fail/Not run **ตอนนี้ยังไม่ได้รัน Tests**
+
+Official Docs: [Codex Skills](https://developers.openai.com/codex/skills) · [Codex Config](https://developers.openai.com/codex/config-basic) · [Claude Skills](https://code.claude.com/docs/en/skills) · [Claude Permissions](https://code.claude.com/docs/en/settings) · [GitLab CLI Auth](https://docs.gitlab.com/cli/authentication/) · [Draft MR](https://docs.gitlab.com/cli/mr/create/)
+
+**สถานะ:** Commit เฉพาะ Setup Guide **ไม่ได้ติดตั้งลงเครื่องมึง ไม่ได้ Login GitLab ไม่ได้เปิด Permission หรือ Deploy จริง**
