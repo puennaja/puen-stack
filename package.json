@@ -1,0 +1,10 @@
+{
+  "name": "puen-stack",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node scripts/bootstrap.mjs",
+    "setup:check": "node scripts/bootstrap.mjs --check",
+    "test": "node --test scripts/*.test.mjs"
+  }
+}
