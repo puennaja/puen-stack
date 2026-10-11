@@ -33,6 +33,8 @@ After installing, open the target repo in Codex/Claude and ask: **“Use `setup-
 
 **Test status:** installer logic was exercised locally with synthetic fixtures. Runtime discovery on actual installed Codex/Claude, Windows Junction behavior, GitLab login and real-project permission enforcement still require a separate pilot.
 
+**Plane Cloud pilot with tracker writes:** See [Plane Cloud OAuth read/write setup](./plane-cloud.md) and [complete idea-to-outcome playbook](../playbooks/idea-to-outcome.md). Skill installation does **not** configure MCP, authentication or Plane project permissions. The installer auto-discovers all seven bundled Skills.
+
 ## 0. Boundaries and prerequisites
 
 - Work on a machine/account authorized for the *target* source repository. Check local company policy, protected branches, merge-review rules, secrets handling and corporate software installation policy.
