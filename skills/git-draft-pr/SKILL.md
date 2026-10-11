@@ -7,6 +7,11 @@ description: Prepare or create a GitHub Draft Pull Request for an approved work 
 
 Use for **GitHub Draft Pull Requests**. For GitLab, use `gitlab-draft-mr`. This procedure grants no GitHub credentials, write access, push authorization or human-gate approval.
 
+## Delivery ordering — canonical policy (2026-10-11)
+
+The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
+
+
 ## Trigger and inputs
 
 Use when asked to prepare/open a Draft PR. Obtain the real repository, existing work item (Plane ID/URL if applicable), exact source branch, investigated target branch, relevant commits, actual test evidence, approvals, PR description and dependencies. Respect repository `AGENTS.md`, CONTRIBUTING, and branch protection.
@@ -39,7 +44,7 @@ Display: actual GitHub `owner/repo`, exact `source → target`, why target, work
    ```
    Do not treat this example as blanket permission to write.
 4. Read back the PR (e.g. `gh pr view <number> --json url,isDraft,baseRefName,headRefName`) and verify real URL, Draft state and exact branches. Report CI/status honestly; if not yet run, say so.
-5. Record real PR link, approvals, evidence and any failures in the work item and `pilot-projects/docs` (or pilot repo `docs/`); classify as Work / Partial / Failed / Not Verified. Do not invent records or forge Human Approval.
+5. Record real PR link, approvals, evidence and any failures in the work item and current product repo `docs/pilot/`; classify as Work / Partial / Failed / Not Verified. Do not invent records or forge Human Approval.
 
 ## Boundaries and output
 

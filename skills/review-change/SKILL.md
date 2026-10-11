@@ -10,6 +10,11 @@ description: Use for a skeptical, evidence-linked review of a fixed code diff ag
 - [Manual test scenarios](./TESTS.md)
 - Can give **preliminary review** of a partial change before formal eligibility. Never call preliminary findings `Verified`.
 
+## Delivery ordering — canonical policy (2026-10-11)
+
+The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
+
+
 ## Inputs and eligibility
 
 Require: **assigned Work Item** + parent acceptance source, scope, authorized repo/worktree, fixed diff base/head SHAs or explicit working-tree snapshot, risk category, actual developer checks, and known external contracts/owners. Read repo `AGENTS.md`, review/commit/CI policies, relevant tests and design links; do not accept the implementer's summary as independent evidence.

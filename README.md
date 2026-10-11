@@ -63,4 +63,4 @@ node scripts/setup.mjs
 
 **GitHub Draft PR:** ใช้ [git-draft-pr](./skills/git-draft-pr/SKILL.md) (ไม่ใช้ GitLab-only Skill) และยังต้อง Live Smoke Test ก่อนรับรองการทำงานจริง
 
-**Skills v0.1 ยังเป็น Draft**; มี Synthetic Test Scenarios และ Installer Unit Tests แต่ Codex/Claude Live Test และ GitLab Self-managed Pilot ต้องทำแยก การติดตั้ง **ไม่ใช่สิทธิ์ Push, เปิด Draft MR, Mark Ready/Merge หรือ Deploy**
+**Skills ยังเป็น Draft**; มี Synthetic Test Scenarios และ Installer Unit Tests แต่ Codex/Claude Live Test และ GitLab Self-managed Pilot ต้องทำแยก การติดตั้ง **ไม่ใช่สิทธิ์ Push, เปิด Draft MR, Mark Ready/Merge หรือ Deploy**

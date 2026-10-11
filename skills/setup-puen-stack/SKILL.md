@@ -11,7 +11,7 @@ description: Use when a developer wants to configure a repository for puen-stack
 
 Use only when the user asks to set up or assess their current repository. Confirm the actual repository root, Git host, responsible human, approved scope and whether they want a read-only assessment or a change proposal. Read current `AGENTS.md`, README and contribution instructions when permitted.
 
-If Skills are missing, recommend that the human reviews `node scripts/setup.mjs --dry-run`, then chooses whether to run the installer. **Never silently run `--yes`**, install tools, authenticate GitLab, edit permission files or touch protected branches.
+If Skills are missing, recommend that the human reviews `node scripts/setup.mjs --dry-run`, then chooses whether to run the installer. **Never silently run `--yes`**, install tools, authenticate any Git hosting provider, edit permission files or touch protected branches.
 
 ## Guided questions (ask only where evidence is insufficient)
 

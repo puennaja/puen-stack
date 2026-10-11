@@ -10,6 +10,11 @@ description: Use to define source-backed acceptance before coding, run honest de
 - [Manual test scenarios](./TESTS.md)
 - This skill never declares a Work Item done, approves a Human Gate, or deploys.
 
+## Delivery ordering — canonical policy (2026-10-11)
+
+The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
+
+
 ## Modes — name one before taking action
 
 1. **Acceptance-first preparation (pre-code):** read **confirmed** user stories, requirements, product decisions, contracts and boundaries. Produce an **independent expected-behavior oracle** with normal, negative, edge and authorization cases; identify safe proof surfaces. No code necessary. If requirements are uncertain, mark `Unknown` and ask the decision owner; do not generate expected behavior by reading the implementation and calling it correct.
