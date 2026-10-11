@@ -9,7 +9,7 @@ description: Prepare or open one GitLab Draft Merge Request after inspecting rep
 
 ## Trigger & required inputs
 
-User requests a Draft MR. Identify assigned Jira Work Item, actual GitLab host/repository, source branch, **investigated** target branch, approved **Human Implementation Gate** evidence, actual publish authorization for the non-protected source branch, commits, MR contents and dependencies.
+User requests a Draft MR. Identify the assigned, confirmed Plane/Jira/other Work Item, actual GitLab host/repository, source branch, **investigated** target branch, approved **Human Implementation Gate** evidence, actual publish authorization for the non-protected source branch, commits, MR contents and dependencies.
 
 ## Mandatory preflight
 
@@ -17,7 +17,7 @@ User requests a Draft MR. Identify assigned Jira Work Item, actual GitLab host/r
 2. Resolve GitLab **host + project namespace** from actual remote; use permitted read-only `glab` / integration calls to inspect existing Draft MRs and CI/review rules. An agent with one open repo does not automatically see sibling repos.
 3. Verify explicit **Human Implementation Gate** and source-branch **Push authorization** separately. If source not published, **do not push** without separately approved scope. Never force-push or update protected branches.
 4. Stop for ambiguous project/target, mismatched GitLab login host, duplicate existing MR, missing commits, required CI blocker, contract dependency, unavailable permission, or secret exposure. Do not create the MR when blocked.
-5. Prepare exact proposal: **project, GitLab host, source → proposed target, why target matches this work item**, Jira link, Draft title/description, tests **Pass/Fail/Not run**, risks, dependencies and reviewer.
+5. Prepare exact proposal: **project, GitLab host, source → proposed target, why target matches this work item**, Work Item link from the configured tracker, Draft title/description, tests **Pass/Fail/Not run**, risks, dependencies and reviewer.
 
 ## Human confirmation — EVERY MR separately
 
@@ -35,7 +35,7 @@ User requests a Draft MR. Identify assigned Jira Work Item, actual GitLab host/r
 
 ## Output, failure handling and authority
 
-Report approved project/source/target + rationale, Jira, approval evidence, actual MR URL/state **or Blocked/Not executed**, CI/test evidence, dependency order, reviewer and next action.
+Report approved project/source/target + rationale, Work Item URL/identifier, approval evidence, actual MR URL/state **or Blocked/Not executed**, CI/test evidence, dependency order, reviewer and next action.
 
 - **Human only:** Draft→Ready, Merge and Production release. **No auto-merge, deployment or feature exposure changes.**
 - **Push is separately authorized:** Draft MR consent never grants access to Push or rewrite history.
