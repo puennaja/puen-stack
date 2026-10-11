@@ -38,6 +38,7 @@ node scripts/setup.mjs
 
 **สำคัญ:** Installer ติดตั้ง Skills เท่านั้น; Plane MCP/OAuth ต้องเชื่อมแยกบนเครื่อง ไม่เปลี่ยน Permissions ให้อัตโนมัติ การ Write ลง Plane กับ Human Gate / Push / Draft MR / Merge / Production Release เป็นคนละสิทธิ์
 
+- **[Plane MCP Permission Setup — Codex & Claude](./setup/plane-permissions.th.md)**
 - **[Codex WSL2/Plus Setup & Model Profiles](./setup/codex-model-routing.th.md)** · [Model Routing Policy (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/guides/codex-model-routing.th.md)
 
 ## Documentation
