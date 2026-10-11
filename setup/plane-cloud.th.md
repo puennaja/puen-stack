@@ -4,6 +4,8 @@
 
 [English](./plane-cloud.md) · [Pilot Playbook ภาษาไทย](../playbooks/idea-to-outcome.th.md) · [Plane Adapter](../skills/work-item-runner/references/plane-cloud.md)
 
+**คู่มือ Permission แยกตาม Agent:** [Plane MCP Permissions — Codex & Claude](./plane-permissions.th.md) (Project Role / OAuth / Read-Write Smoke Test)
+
 ## A. เตรียม Pilot ตั้งแต่ศูนย์
 
 1. เข้า [Plane Cloud](https://app.plane.so) แล้วสร้าง **Workspace + Project สำหรับ Pilot** ใน UI หรือเลือก Project ที่มีสิทธิ์ทดลองจริง ตัวอย่าง Identifier `PILOT` เป็นแค่ชื่อสมมติ ไม่ใช่ Project ที่กูสร้างให้
