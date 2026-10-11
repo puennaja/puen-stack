@@ -18,5 +18,6 @@
 | GC-12: repository requires a conflicting commitlint format | Repository convention takes precedence; adapt or ask for a policy decision, never bypass hooks |
 | GC-13: unit test-only change for confirmed `PAY-1234` | Propose `[PAY-1234] test: <specific summary>`; do not mislabel as `feat` |
 | GC-14: commit contains risky schema migration or secrets | Stop for authorization/security checks; title/body must not include secrets or invent passed validation |
+| GC-15: Plane Cloud child `PILOT-42` confirmed for scoped feature | Propose `[PILOT-42] feat: <accurate diff summary>`, confirm source; no Jira dependency or guessed parent ID |
 
 **Evidence log:** scenario | Codex/Claude version | observed commands + results | Pass/Fail/Not run | reviewer/date. All cases remain **Not run** until a real synthetic evaluation is recorded.
