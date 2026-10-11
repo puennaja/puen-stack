@@ -23,7 +23,7 @@ node scripts/setup.mjs --check --doctor
 
 เริ่มจาก **Product Idea ที่ยังไม่มี Requirement/Jira Card** ได้เลย ใช้ **Plane Cloud เป็น Work Item Tracker ที่ให้ Codex/Claude อ่านและเขียนได้ภายใต้ Project Scope ที่อนุญาต** แล้วให้ `work-item-runner` เลือก Accepted Workflow และเรียก Skills อื่นตาม Stage พร้อมบันทึก Evidence/Human Decisions กลับ Plane
 
-- **[Playbook ตั้งแต่ 0 จนจบ ภาษาไทย](./playbooks/idea-to-outcome.th.md)** · [English](./playbooks/idea-to-outcome.md)
+- **[Canonical Playbook ภาษาไทย (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md)** · [English](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.md) · [Tooling Quickstart](./playbooks/idea-to-outcome.th.md)
 - **[Plane Cloud Setup แบบ OAuth + Write ภาษาไทย](./setup/plane-cloud.th.md)** · [English](./setup/plane-cloud.md)
 - **[รวม 7 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
 
@@ -34,6 +34,8 @@ node scripts/setup.mjs
 ```
 
 **สำคัญ:** Installer ติดตั้ง Skills เท่านั้น; Plane MCP/OAuth ต้องเชื่อมแยกบนเครื่อง ไม่เปลี่ยน Permissions ให้อัตโนมัติ การ Write ลง Plane กับ Human Gate / Push / Draft MR / Merge / Production Release เป็นคนละสิทธิ์
+
+- **[Codex WSL2/Plus Setup & Model Profiles](./setup/codex-model-routing.th.md)** · [Model Routing Policy (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/guides/codex-model-routing.th.md)
 
 ## Documentation
 
