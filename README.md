@@ -28,7 +28,7 @@ node scripts/setup.mjs --check --doctor
 
 - **[Canonical Playbook ภาษาไทย (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md)** · [English](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.md) · [Tooling Quickstart](./playbooks/idea-to-outcome.th.md)
 - **[Plane Cloud Setup แบบ OAuth + Write ภาษาไทย](./setup/plane-cloud.th.md)** · [English](./setup/plane-cloud.md)
-- **[รวม 7 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
+- **[รวม 8 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
 
 ```bash
 # หลัง Clone Repo แล้ว
@@ -45,5 +45,7 @@ node scripts/setup.mjs
 - [Setup Guide ภาษาไทย](./setup/README.th.md) · [Setup Guide English](./setup/README.md)
 - [Skill Catalog ภาษาไทย](./skills/README.th.md) · [Skill Catalog English](./skills/README.md)
 - [Script CLI และ Tests](./scripts/README.md)
+
+**GitHub Draft PR:** ใช้ [git-draft-pr](./skills/git-draft-pr/SKILL.md) (ไม่ใช้ GitLab-only Skill) และยังต้อง Live Smoke Test ก่อนรับรองการทำงานจริง
 
 **Skills v0.1 ยังเป็น Draft**; มี Synthetic Test Scenarios และ Installer Unit Tests แต่ Codex/Claude Live Test และ GitLab Self-managed Pilot ต้องทำแยก การติดตั้ง **ไม่ใช่สิทธิ์ Push, เปิด Draft MR, Mark Ready/Merge หรือ Deploy**
