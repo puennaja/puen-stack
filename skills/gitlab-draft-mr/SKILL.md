@@ -5,7 +5,7 @@ description: Prepare or open one GitLab Draft Merge Request after inspecting rep
 
 # gitlab-draft-mr — v0.1 Draft
 
-**Purpose:** Prepare and, only with appropriate permissions and per-MR human confirmation, create **one GitLab Draft MR**. Does **not** grant network, Git credentials, API access or remote publication rights. See [Thai](./SKILL.th.md), [tests](./TESTS.md), and [Accepted Implementation](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
+**Purpose:** Prepare and, only with appropriate permissions and per-MR human confirmation, create **one GitLab Draft MR**. Does **not** grant network, Git credentials, API access or remote publication rights. See [tests](./TESTS.md) and [Accepted Implementation](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
 
 ## Trigger & required inputs
 
