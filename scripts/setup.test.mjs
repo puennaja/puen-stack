@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import { wizardOptions } from './setup.mjs';
 
 const SOURCE = fileURLToPath(new URL('./setup.mjs', import.meta.url));
 
@@ -108,4 +109,78 @@ test('doctor never installs, even with --yes',t=>{
   const f=fixture(t),r=f.run('--doctor','--yes');
   ok(r); assert.match(r.stdout,/CLI diagnostics/);
   assert.equal(fs.readdirSync(f.home).length,0);
+});
+
+
+function wizardAnswers(responses) {
+  const remaining = [...responses];
+  return async prompt => {
+    if (!remaining.length) throw Error('Missing synthetic wizard answer for: ' + prompt);
+    return remaining.shift();
+  };
+}
+
+test('no-argument wizard refuses non-TTY and leaves filesystem untouched', t => {
+  const f=fixture(t);
+  for(const args of [[], ['--wizard']]) {
+    const r=f.run(...args);
+    assert.notEqual(r.status,0);
+    assert.match(r.stderr,/Interactive wizard requires a terminal/);
+    assert.equal(fs.readdirSync(f.project).length,0);
+    assert.equal(fs.readdirSync(f.home).length,0);
+  }
+});
+
+test('wizard: default Global, both agents, all skills, link', async () => {
+  const names=['git-commit','gitlab-draft-mr','setup-puen-stack'];
+  const result=await wizardOptions(names,wizardAnswers(['','','','']));
+  assert.equal(result.scope,'user');
+  assert.equal(result.project,null);
+  assert.equal(result.agent,'both');
+  assert.equal(result.mode,'link');
+  assert.deepEqual(result.skill,names);
+});
+
+test('wizard: project, specific existing path, Codex, selected skills, copy', async t => {
+  const f=fixture(t);
+  const result=await wizardOptions(['git-commit','gitlab-draft-mr','setup-puen-stack'],
+    wizardAnswers(['2',f.project,'2','1,3','']));
+  assert.equal(result.scope,'project');
+  assert.equal(result.project,f.project);
+  assert.equal(result.agent,'codex');
+  assert.equal(result.mode,'copy');
+  assert.deepEqual(result.skill,['git-commit','setup-puen-stack']);
+});
+
+test('wizard: Global copy is an explicit alternative, duplicates deduplicated', async () => {
+  const result=await wizardOptions(['git-commit','gitlab-draft-mr'],
+    wizardAnswers(['1','3','2,2','2']));
+  assert.equal(result.scope,'user');
+  assert.equal(result.agent,'claude');
+  assert.equal(result.mode,'copy');
+  assert.deepEqual(result.skill,['gitlab-draft-mr']);
+});
+
+test('wizard: invalid choices, empty project and missing paths require correction', async t => {
+  const f=fixture(t);
+  const result=await wizardOptions(['git-commit','gitlab-draft-mr'],
+    wizardAnswers(['90','2','',path.join(f.root,'does-not-exist'),f.project,
+      'bad','2','none','1,90','2','8','']));
+  assert.equal(result.scope,'project');
+  assert.equal(result.project,f.project);
+  assert.equal(result.agent,'codex');
+  assert.deepEqual(result.skill,['gitlab-draft-mr']);
+  assert.equal(result.mode,'copy');
+});
+
+test('wizard: cancellation rejects before any installation', async () => {
+  await assert.rejects(() => wizardOptions(['git-commit'],wizardAnswers(['q'])),/cancelled/);
+});
+
+test('wizard: explicit CLI still works, and --wizard cannot be mixed with --yes', t => {
+  const f=fixture(t);
+  ok(f.run('--agent','claude','--scope','project','--project',f.project,'--dry-run'));
+  const bad=f.run('--wizard','--yes');
+  assert.notEqual(bad.status,0);
+  assert.equal(fs.readdirSync(f.project).length,0);
 });
