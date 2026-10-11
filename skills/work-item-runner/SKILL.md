@@ -37,7 +37,7 @@ Follow the accepted activities; stages may be combined for low-risk work, but ma
 | 4. Delivery Planning | [Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/delivery-planning.md) / [Artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/delivery-planning.md) | Whole-feature map + progressively detailed **next** Work Item; **Feature-level Human Delivery Planning Gate** |
 | 5. Implementation (per Work Item) | [Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md) / [Artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/implementation.md) | Authorized scoped code edits, developer checks, `verify-work-item` preparation; **Human Implementation Gate for each Work Item** |
 | 6. Independent Verification (per Work Item) | [Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md) / [Artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/verification.md) | `review-change` and `verify-work-item` formal path only after eligible developer checks and Implementation Gate; **Human Verification Gate per Work Item** |
-| 7. Commit / Draft MR coordination | `git-commit` and `gitlab-draft-mr` | Separate scoped commit/push authority; ask human confirmation before **each** Draft MR; **human alone** marks Ready/Merge |
+| 7. Commit / Draft PR/MR coordination | `git-commit`, then `git-draft-pr` for GitHub or `gitlab-draft-mr` for GitLab | Select provider from verified Git remote; separate commit/push authority; ask human confirmation before **each** Draft PR/MR; **human alone** marks Ready/Merge |
 | 8. Release & Operations | [Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/release-operations.md) / [Artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/release-operations.md) | Bounded release readiness + explicit **human Go/No-Go for each production release**; fresh human confirmation before every anomaly-driven intervention |
 | 9. Outcome & Learning | Release & Operations Q6 + FDL Stage 9 | Actual technical outcome distinct from observed product/business outcome; human owner, unresolved hypotheses, next checkpoint |
 
@@ -52,7 +52,9 @@ Use a **normalized work-item record** without making up project taxonomy:
 - `stage, pending_human_gate, human_decision_source, blockers, next_owner, checkpoint`
 - `updated_at, last_confirmed_source`
 
-**Plane Cloud default:** official OAuth MCP at `https://mcp.plane.so/http/mcp`. Discover **actual available tools/actions and schemas** at runtime. Look up workspace/project/record before creating anything. Work-item human identifier (e.g. `ENG-42`) and UUID differ; resolve UUID for calls requiring it. Write operations may include **create/update/comment/link** but only inside a named, explicitly authorized Plane project, with approved content/scope and sufficient role. The user wanting write capability allows designing for writes; it does **not** license any unspecified mutations. Use [adapter](./references/plane-cloud.md).
+**Plane Cloud adapter (only when selected):** official OAuth MCP at `https://mcp.plane.so/http/mcp`. Discover **actual available tools/actions and schemas** at runtime. Look up workspace/project/record before creating anything. Work-item human identifier (e.g. `ENG-42`) and UUID differ; resolve UUID for calls requiring it. Write operations may include **create/update/comment/link** but only inside a named, explicitly authorized Plane project, with approved content/scope and sufficient role. The user wanting write capability allows designing for writes; it does **not** license any unspecified mutations. Use [adapter](./references/plane-cloud.md).
+
+**Provider neutrality:** Core workflow must use capabilities such as list/read/create/update/comment work items, not rely on vendor names. Inspect selected provider tools and permissions. Missing or unsupported integration is `Blocked / Not Verified`, not an invitation to silently switch services. For pilot projects, invoke `pilot-recorder` at meaningful setup and lifecycle milestones for evidence stored in product `docs/pilot/`.
 
 **No duplicate records:** search existing work before creation; do not create an Issue per workflow phase. Parent feature and approved child Work Items are enough. Work Item state is not a human gate; never mark `Completed` to hide unresolved verification/release risks. For unsupported tracker actions report `Not executed / Blocked` and provide a concise manual payload.
 
@@ -69,7 +71,7 @@ Next action: <safe action, owner/checkpoint>
 Unverified: <unknowns, Not run / Blocked / Inconclusive>
 ```
 
-Use provider activity/history as the default change trail, **not a mandatory second log**. Read back successful writes to get real IDs and links. Avoid duplicate comments on retries: re-fetch/reconcile first; when the API supports stable external IDs, use them carefully; otherwise inspect the current comments and serialize per work item. Never impersonate the human approver. A claimed approval must point to an **actual human decision** (Plane comment, MR record or human message), not an AI-generated label.
+Use provider activity/history for tracker chronology, while the **pilot-recorder local evidence log** tracks experiments and setup failures; avoid redundant event copies. Read back successful writes to get real IDs and links. Avoid duplicate comments on retries: re-fetch/reconcile first; when the API supports stable external IDs, use them carefully; otherwise inspect the current comments and serialize per work item. Never impersonate the human approver. A claimed approval must point to an **actual human decision** (Plane comment, MR record or human message), not an AI-generated label.
 
 ## Stop / handoff protocol
 
@@ -79,4 +81,4 @@ Before each human gate, show: decision requested, exact object and scope, altern
 
 **Explicit exclusions:** no credentials/role changes, guessed Jira/Plane IDs, unapproved project setup, cross-repo browsing without access, secret uploads to public repos, arbitrary tracker bulk edits/deletions, automatic Ready/Merge/production release, or self-issued human gate approvals.
 
-**Status:** Pilot draft. The skill is not yet proven by a live Plane Cloud + Codex/Claude + GitLab run.
+**Status:** Pilot draft. The skill is not yet proven through an end-to-end live pilot using any selected provider configuration.
