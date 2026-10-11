@@ -15,7 +15,7 @@ function fixture(t) {
   const src = path.join(root, 'bundle');
   fs.mkdirSync(path.join(src, 'scripts'), { recursive: true });
   fs.copyFileSync(SOURCE, path.join(src, 'scripts/setup.mjs'));
-  for (const name of ['git-commit', 'gitlab-draft-mr', 'setup-puen-stack']) {
+  for (const name of ['git-commit', 'gitlab-draft-mr', 'setup-puen-stack', 'work-item-runner', 'codebase-explore', 'verify-work-item', 'review-change']) {
     const folder = path.join(src, 'skills', name);
     fs.mkdirSync(folder, { recursive: true });
     fs.writeFileSync(path.join(folder, 'SKILL.md'), '---\nname: '+name+'\ndescription: synthetic\n---\n\n# '+name+'\n');
@@ -42,9 +42,9 @@ test('user-global links both agents; repeat install is idempotent', t => {
   const f=fixture(t);
   ok(f.run('--dry-run'));
   assert.equal(fs.readdirSync(f.home).length,0);
-  const install=f.run('--yes'); ok(install); assert.match(install.stdout,/Installed 6 dest/);
+  const install=f.run('--yes'); ok(install); assert.match(install.stdout,/Installed 14 dest/);
   for(const agent of ['.agents/skills','.claude/skills']) {
-    for(const name of ['git-commit','gitlab-draft-mr','setup-puen-stack']){
+    for(const name of ['git-commit','gitlab-draft-mr','setup-puen-stack','work-item-runner','codebase-explore','verify-work-item','review-change']){
       const d=path.join(f.home,agent,name);
       assert.equal(fs.lstatSync(d).isSymbolicLink(),true);
       assert.match(fs.readFileSync(path.join(d,'SKILL.md'),'utf8'),new RegExp('name: '+name));
