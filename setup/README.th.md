@@ -61,7 +61,7 @@ git status --short --branch
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-for skill in git-commit gitlab-draft-mr; do
+for skill in git-commit gitlab-draft-mr setup-puen-stack; do
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.agents/skills/$skill"
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.claude/skills/$skill"
 done
@@ -74,7 +74,7 @@ $source = Join-Path $HOME 'src\puen-stack\skills'
 $codexSkills = Join-Path $HOME '.agents\skills'
 $claudeSkills = Join-Path $HOME '.claude\skills'
 New-Item -ItemType Directory -Force -Path $codexSkills, $claudeSkills | Out-Null
-foreach ($name in @('git-commit', 'gitlab-draft-mr')) {
+foreach ($name in @('git-commit', 'gitlab-draft-mr', 'setup-puen-stack')) {
   $target = Join-Path $source $name
   foreach ($root in @($codexSkills, $claudeSkills)) {
     $link = Join-Path $root $name
