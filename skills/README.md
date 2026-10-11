@@ -6,15 +6,16 @@ A Skill has one **English `SKILL.md` entrypoint**, shared by Codex and Claude. N
 
 | Skill | When to use | Skill (EN) | Test scenarios |
 | --- | --- | --- | --- |
+| **pilot-recorder** | Record verified setup/experiment issues and decisions in the product repo's docs/pilot | [SKILL.md](./pilot-recorder/SKILL.md) | [TESTS](./pilot-recorder/TESTS.md) |
 | **git-commit** | Scoped **local** commit; default message `[<subtask-id>] feat: <summary>` (repo convention overrides) | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
 | **git-draft-pr** | GitHub Draft PR only; verify remote, duplicate PR, exact head/base and separate push/PR approvals | [SKILL.md](./git-draft-pr/SKILL.md) | [TESTS](./git-draft-pr/TESTS.md) |
 | **gitlab-draft-mr** | Propose a GitLab Draft MR and require human approval for **each** source/target pair | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
 | **setup-puen-stack** | Inspect a repo and guide a human through tracker, Git flow and permission readiness | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
-| **work-item-runner** | Coordinate idea-to-outcome stages with bounded Plane Cloud read/write + human gates | [SKILL.md](./work-item-runner/SKILL.md) | [TESTS](./work-item-runner/TESTS.md) |
+| **work-item-runner** | Coordinate idea-to-outcome stages with bounded selected work-tracker capabilities + human gates | [SKILL.md](./work-item-runner/SKILL.md) | [TESTS](./work-item-runner/TESTS.md) |
 | **codebase-explore** | Source-grounded Technical Discovery / greenfield feasibility, read-only | [SKILL.md](./codebase-explore/SKILL.md) | [TESTS](./codebase-explore/TESTS.md) |
 | **verify-work-item** | Acceptance-first checks, developer proof and gated formal behavior verification | [SKILL.md](./verify-work-item/SKILL.md) | [TESTS](./verify-work-item/TESTS.md) |
 | **review-change** | Independent diff, test quality and blast-radius review | [SKILL.md](./review-change/SKILL.md) | [TESTS](./review-change/TESTS.md) |
 
-**Pilot guide:** [Idea-to-outcome playbook](../playbooks/idea-to-outcome.md) / [ภาษาไทย](../playbooks/idea-to-outcome.th.md), plus [Plane Cloud OAuth write setup](../setup/plane-cloud.md). **Installation:** Use the [safe setup script](../scripts/setup.mjs) from a reviewed local clone. Run `node scripts/setup.mjs --dry-run` first, then `node scripts/setup.mjs --yes` if the plan is correct. [CLI manual](../scripts/README.md).
+**Pilot guide:** [Idea-to-outcome playbook](../playbooks/idea-to-outcome.md) / [ภาษาไทย](../playbooks/idea-to-outcome.th.md), plus [Plane Cloud OAuth write setup](../setup/plane-cloud.md). **Bootstrap:** `npm run setup` for provider selection and Codex profiles. **Skill-only installation:** Use the [safe setup script](../scripts/setup.mjs) from a reviewed local clone. Run `node scripts/setup.mjs --dry-run` first, then `node scripts/setup.mjs --yes` if the plan is correct. [CLI manual](../scripts/README.md).
 
-**State:** All eight skills remain **v0.1 Drafts pending live agent + Plane/GitLab evaluation**. Installing them does **not** grant GitLab tokens, Push, protected branch changes, Draft MR creation, Ready/Merge, CI bypass or production actions. Always follow actual [AGENTS.md](../AGENTS.md), [contribution guidance](../docs/CONTRIBUTING.md) and [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
+**State:** All nine skills remain **v0.1 Drafts pending live agent + Plane/GitLab evaluation**. Installing them does **not** grant GitLab tokens, Push, protected branch changes, Draft MR creation, Ready/Merge, CI bypass or production actions. Always follow actual [AGENTS.md](../AGENTS.md), [contribution guidance](../docs/CONTRIBUTING.md) and [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
