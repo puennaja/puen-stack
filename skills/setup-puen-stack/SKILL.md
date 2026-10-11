@@ -15,10 +15,10 @@ If Skills are missing, recommend that the human reviews `node scripts/setup.mjs 
 
 ## Guided questions (ask only where evidence is insufficient)
 
-1. **Source of work:** Jira, GitLab, or another actual issue tracker; issue link and accessible acceptance sources. Never assume the agent can retrieve a Jira ID without an integration.
+1. **Source of work:** Plane Cloud (preferred for this pilot), Jira, GitLab Issues or another configured tracker. Inspect real issue links and acceptance sources. Ask whether the operator explicitly authorizes bounded tracker reads/writes; a Skill or CLI present on disk is **not** authentication or authorization.
 2. **Repository scope:** Which repo and Work Item are assigned? Which BE/BFF/FE, external contracts and sibling repos are outside the current workspace?
 3. **Git flow:** Actual branch/commit conventions, required CI, reviewer rules, protected branches, source and target policy. **Every Draft MR still requires its own explicit human confirmation of repo/source/target**, regardless of defaults.
-4. **Engineering evidence:** Where are specs, technical findings, ADRs, tests, Jira/MR approvals and release records stored? Use the existing tracker instead of creating duplicate mandatory reports.
+4. **Engineering evidence:** Where are specs, technical findings, ADRs, tests, Plane/Jira/MR human approvals and release records stored? Use the existing tracker instead of creating duplicate mandatory reports.
 5. **Permissions and human gates:** Authorized safe test targets, actual account/project rights, Implementation/Verification approval owners, separate work-branch Push approval, and incident/release decision owner.
 
 ## Read-only readiness assessment
@@ -36,6 +36,6 @@ Present a concise summary: confirmed facts, specific missing owner/approval, min
 
 ## Expected output / failure handling
 
-State **Ready for synthetic pilot / Needs setup / Blocked**, with evidence, owner, and smallest safe next action. A short Jira comment is enough; no required report.
+State **Ready for synthetic pilot / Needs setup / Blocked**, with evidence, owner, and smallest safe next action. A short comment on an authorized Plane/Jira/other Work Item is enough; no required report.
 
 This v0.1 Skill has not been live-tested. Follow [TESTS.md](./TESTS.md) and the [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
