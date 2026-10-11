@@ -4,7 +4,21 @@
 
 Engineering Practices, Accepted Workflows และ Artifact Templates อยู่ที่ [puen-engineer](https://github.com/puennaja/puen-engineer) ส่วน Skills/Agent Setup/Tooling อยู่ที่นี่
 
-## Quickstart — ติดตั้ง Skills ทั้ง Codex และ Claude
+## Quickstart — เลือก Provider ได้ (Pilot)
+
+```bash
+git clone https://github.com/puennaja/puen-stack.git
+cd puen-stack
+npm run setup
+```
+
+Bootstrap Wizard ให้เลือก **Codex/Claude/Both**, **Plane/Jira/GitHub Issues/None**, **GitHub/GitLab/None**, และ Global/Project Skills. สร้าง Codex Profile เฉพาะไฟล์ที่ยังไม่มี; ตรวจ Credential และขอ Confirm ก่อน Official Login (ไม่แจก Role/Permission หรือ Push ให้อัตโนมัติ). Provider ที่ยังไม่มี Connector ต้องทำตาม Guide และถือว่า `Not Verified`.
+
+จากนั้นเปิด Product Repo (เช่น `fall-in-love-project`) เรียก **`pilot-recorder` ก่อน `setup-puen-stack`** และทำตาม [Canonical Playbook](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md). บันทึกผลการทดลองที่ Product `docs/pilot/`.
+
+**Safety:** ไม่จำเป็นต้องลบ `~/.codex` หรือถอน CLI เพื่อรัน Wizard; ตรวจสภาพเดิมและสำรองก่อนเปลี่ยน Config. `npm run setup -- --dry-run` เป็น Preview Preset (Codex/GitHub/Plane) ไม่ใช่การทดสอบ Integration จริง.
+
+## Legacy Skill-only Installer — Codex และ Claude
 
 **ต้องมี Node.js 18+** ติดตั้งบนเครื่อง และควร Review Source ก่อนรัน:
 
@@ -28,7 +42,7 @@ node scripts/setup.mjs --check --doctor
 
 - **[Canonical Playbook ภาษาไทย (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md)** · [English](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.md) · [Tooling Quickstart](./playbooks/idea-to-outcome.th.md)
 - **[Plane Cloud Setup แบบ OAuth + Write ภาษาไทย](./setup/plane-cloud.th.md)** · [English](./setup/plane-cloud.md)
-- **[รวม 8 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
+- **[รวม 9 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
 
 ```bash
 # หลัง Clone Repo แล้ว
