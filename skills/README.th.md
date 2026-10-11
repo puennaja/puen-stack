@@ -2,13 +2,16 @@
 
 [English](./README.md) · [คู่มือ Setup ไทย](../setup/README.th.md) · [Setup EN](../setup/README.md)
 
-หนึ่ง Skill มี **Entry Point ภาษาอังกฤษ `SKILL.md` เพียงไฟล์เดียว** ที่ Codex กับ Claude ใช้ร่วมกัน ส่วนคู่มือ Setup และ Catalog สำหรับคนอ่านยังคงแยกภาษาไทยได้ เพื่อลดงานดูแล Skill ซ้ำสองภาษา
+Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอังกฤษเดียวกัน** ไม่ต้องมี `SKILL.th.md` คู่กัน ส่วนเอกสาร Setup และ Catalog ยังคงแยกภาษาไทย/อังกฤษได้
 
 | Skill | ใช้เมื่อ | Skill (EN) | Test Scenarios |
 | --- | --- | --- | --- |
-| **git-commit** | เตรียม/Review/ทำ Local Commit แบบ Scoped | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
-| **gitlab-draft-mr** | เตรียม/สร้าง Draft MR เมื่อ **Human ยืนยัน Source/Target เฉพาะ MR นั้น** | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
+| **git-commit** | เตรียม/Review/สร้าง Local Commit เฉพาะ Scoped Changes | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
+| **gitlab-draft-mr** | เตรียม Draft MR และขอ Human Confirm **ทุก MR** | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
+| **setup-puen-stack** | ตรวจ Repo, Git Flow, Issue Tracker, AGENTS.md และสิทธิ์ก่อนใช้งานจริง | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
 
-**สถานะ:** v0.1 Draft ทั้งสอง Skills **ยังไม่ได้ Live Test กับ Codex/Claude/GitLab** Test Scenarios ที่เขียนไว้ยัง Not run ไม่มี Script ติดตั้ง ไม่มี Credential/Permission ที่เปิดให้เครื่องจริง และไม่ให้ AI Auto Push/Ready/Merge/Deploy
+**ติดตั้งด้วย Script:** จาก `puen-stack` ที่ Clone และ Review แล้ว ใช้ `node scripts/setup.mjs --dry-run` เพื่อดูสิ่งที่จะติดตั้ง จากนั้น `node scripts/setup.mjs --yes` และ `node scripts/setup.mjs --check --doctor` เพื่อเช็กสถานะ อ่าน [คู่มือ Script](../scripts/README.md) และ [Setup Guide ไทย](../setup/README.th.md)
 
-**แบ่งความรับผิดชอบ:** [puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows) เก็บ Accepted Workflows ส่วน `puen-stack` เก็บ Skills/Setup/Reusable Tools อ่าน [AGENTS.md](../AGENTS.md) กับ [Contributing](../docs/CONTRIBUTING.md) และทำ Setup ด้วยเจ้าของเครื่องก่อนใช้งานจริง
+**สถานะ:** ทั้งสาม Skills ยังเป็น **v0.1 Draft** ยังไม่ได้ยืนยันการใช้งานจริงร่วมกับ Codex/Claude/GitLab การติดตั้ง Skill **ไม่ให้ Permission Push, เปิด Draft MR, Merge, Deploy หรือเข้าถึง Production** อัตโนมัติ
+
+หลักการกลางอยู่ที่ [AGENTS.md](../AGENTS.md) · [Contributing](../docs/CONTRIBUTING.md) และ Accepted Workflows อยู่ที่ [puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
