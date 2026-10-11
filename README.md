@@ -11,12 +11,13 @@ Engineering Practices, Accepted Workflows และ Artifact Templates อยู
 ```bash
 git clone https://github.com/puennaja/puen-stack.git
 cd puen-stack
-node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --yes
+node scripts/setup.mjs
 node scripts/setup.mjs --check --doctor
 ```
 
-Script รองรับ Windows PowerShell/macOS/Linux, User Scope (Link) หรือ Project Scope (Copy) และรันซ้ำได้ โดย **ไม่ทับไฟล์เดิม** และ **ไม่เปิด GitLab/Agent Permissions เอง** หลังติดตั้งเรียก Skill `setup-puen-stack` ให้ช่วยตรวจ AGENTS.md, Git Flow และแนวทาง Permission ของ Repo งานจริง
+**รันโดยไม่ใส่ Arguments จะเข้า Interactive Wizard:** เลือก Global หรือ Project → Codex / Claude / Both → Skills → Link หรือ Copy → ดู Dry-run Plan → ยืนยันก่อนติดตั้ง โดย Global ใช้ Link เป็นค่าเริ่มต้น และ Project ใช้ Copy เป็นค่าเริ่มต้น
+
+สำหรับ CLI/Automation ยังใช้ `node scripts/setup.mjs --dry-run` และ `node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes` ได้เหมือนเดิม Script รองรับ Windows PowerShell/macOS/Linux และรันซ้ำได้โดย **ไม่ทับไฟล์เดิม** และ **ไม่เปิด GitLab/Agent Permissions เอง** หลังติดตั้งเรียก Skill `setup-puen-stack` ให้ช่วยตรวจ AGENTS.md, Git Flow และ Permission ของ Repo งานจริง
 
 ## Documentation
 
