@@ -21,6 +21,9 @@ node scripts/setup.mjs --check --doctor
 
 ## Pilot จาก Idea → Feature → Outcome
 
+**Current Pilot Setup (2026-10-11):** Codex Profiles ตั้งค่าแล้ว, Skills ติดตั้งแบบ Global แล้ว (ยังต้องตรวจ Skill Discovery); Version Control ใช้ **Git** และ Pilot ปัจจุบันใช้ **GitHub Draft PR**; GitLab Draft MR เป็นทางเลือก ไม่ต้องติดตั้ง Skills ซ้ำหากค้นพบได้จริง
+
+
 เริ่มจาก **Product Idea ที่ยังไม่มี Requirement/Jira Card** ได้เลย ใช้ **Plane Cloud เป็น Work Item Tracker ที่ให้ Codex/Claude อ่านและเขียนได้ภายใต้ Project Scope ที่อนุญาต** แล้วให้ `work-item-runner` เลือก Accepted Workflow และเรียก Skills อื่นตาม Stage พร้อมบันทึก Evidence/Human Decisions กลับ Plane
 
 - **[Canonical Playbook ภาษาไทย (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md)** · [English](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.md) · [Tooling Quickstart](./playbooks/idea-to-outcome.th.md)
