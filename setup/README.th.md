@@ -33,6 +33,8 @@ node --test scripts/setup.test.mjs
 
 **สถานะ Test:** ทดสอบ Installer Logic กับ Synthetic Fixtures ภายในเครื่องแล้ว ส่วนการค้นพบ Skill บน Codex/Claude ที่ติดตั้งจริง, Junction บน Windows, GitLab Login และ Permission ของ Repo งานจริง **ยังต้อง Pilot แยก**
 
+**Pilot ใช้ Plane Cloud แบบ Read/Write:** ดู [คู่มือเชื่อม Plane Cloud OAuth](./plane-cloud.th.md) และ [Playbook เริ่มจาก Idea จนครบ Lifecycle](../playbooks/idea-to-outcome.th.md) Script ติดตั้งแค่ Skill Directory **ไม่ได้ตั้ง Plane MCP/Login/Permissions ให้อัตโนมัติ** และจะค้นพบ Skills ทั้งเจ็ดตัวที่มีใน Repo
+
 ## 0. เตรียมก่อน
 
 - ใช้กับเครื่องและ Repository ที่ได้รับอนุญาตเท่านั้น ตรวจ Company Policy, Branch Protection, Reviewers, Secrets และข้อห้ามการติดตั้ง Software
