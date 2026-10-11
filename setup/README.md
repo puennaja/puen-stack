@@ -4,6 +4,8 @@
 
 [ภาษาไทย](./README.th.md) · [Skill index](../skills/README.md) · [puen-engineer Accepted workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows)
 
+**Primary bootstrap:** use `npm run setup` to select agent, tracker, Git host and global/project Skill installation. The manual skill-only instructions below are fallback, not mandatory Plane/GitLab defaults.
+
 ## Quick start — recommended setup script
 
 **Requires Node.js 18+ and a reviewed clone** of this repository. Both macOS/Linux shells and Windows PowerShell can run the **same** commands (Windows may use `node .\\scripts\\setup.mjs`):

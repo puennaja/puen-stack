@@ -71,7 +71,7 @@ try{
   const agent=await select('Agent',['Codex','Claude Code','Both']);
   const tracker=await select('Work tracker',['Plane Cloud','Jira','GitHub Issues','None / later']);
   const host=await select('Git hosting',['GitHub','GitLab','None / later']);
-  const scope=await select('Skill installation',['Global','Project / later']);
+  const scope=await select('Skill installation',['Global','Project']);
   const configAgent=agent==='Codex'||agent==='Both';
   const installAgent=agent==='Both'?'both':agent==='Codex'?'codex':'claude';
   console.log('\nPLAN: '+JSON.stringify({agent,tracker,host,scope},null,2));
@@ -97,24 +97,34 @@ try{
       const r=cmd('node',[path.join(root,'scripts','setup.mjs'),'--agent',installAgent,'--scope','user','--mode','link','--yes'],true);
       if(!r.ok)console.log('Skill installer did not complete; check conflicts; no automatic overwrite.');
     }
-  }else console.log('Project-scoped Skills: run node scripts/setup.mjs inside puen-stack after choosing project path.');
+  }else {
+    const projectPath=dryRun?'./product-repository':(await rl.question('Existing project repository path: ')).trim();
+    const target=path.resolve(projectPath);
+    if(!dryRun&&(!fs.existsSync(target)||!fs.statSync(target).isDirectory()))throw Error('Project directory does not exist: '+target);
+    if(await confirm('Install project-scoped Skills to '+target+' (preview first)?')){
+      const preview=cmd('node',[path.join(root,'scripts','setup.mjs'),'--agent',installAgent,'--scope','project','--project',target,'--dry-run'],true);
+      if(!preview.ok)throw Error('Project Skill preview failed');
+      if(await confirm('Confirm exact project Skill installation?')){
+        const result=cmd('node',[path.join(root,'scripts','setup.mjs'),'--agent',installAgent,'--scope','project','--project',target,'--yes'],true);
+        if(!result.ok)throw Error('Project Skill installation failed; review conflicts');
+      }
+    }
+  }
   if(host==='GitHub'){
     const ghAuthorized=cmd('gh',['auth','status']).ok;
     console.log('GitHub auth status: '+(ghAuthorized?'authenticated':'unverified'));
-    if(!ghAuthorized&&cmd('gh',['--version']).ok)await maybe('gh',['auth','login'],'Interactive GitHub authentication (only if needed)');
-    else console.log('Install GitHub CLI (gh) separately using official instructions.');
+    if(!ghAuthorized){ if(cmd('gh',['--version']).ok)await maybe('gh',['auth','login'],'Interactive GitHub authentication (only if needed)'); else console.log('Install GitHub CLI (gh) using official instructions.'); }
   }else if(host==='GitLab'){
     const glabAuthorized=cmd('glab',['auth','status']).ok;
     console.log('GitLab auth status: '+(glabAuthorized?'authenticated':'unverified'));
-    if(!glabAuthorized&&cmd('glab',['--version']).ok)await maybe('glab',['auth','login'],'Interactive GitLab authentication (only if needed)');
-    else console.log('Install GitLab CLI (glab) separately using official instructions.');
+    if(!glabAuthorized){ if(cmd('glab',['--version']).ok)await maybe('glab',['auth','login'],'Interactive GitLab authentication (only if needed)'); else console.log('Install GitLab CLI (glab) using official instructions.'); }
   }
   if(tracker==='Plane Cloud'&&configAgent){
     const out=cmd('codex',['mcp','list']);
     if(out.ok&&/\bplane\b/.test(out.output))console.log('Plane MCP exists; check connection and OAuth from Codex.');
     else await maybe('codex',['mcp','add','plane','--url','https://mcp.plane.so/http/mcp'],'Register official Plane MCP (does not grant project roles)');
     console.log('Next: codex mcp login plane (interactive OAuth) then test read before authorized write.');
-  }else if(tracker!=='None / later')console.log('Selected tracker: '+tracker+' — follow provider-specific authentication guide; no unsupported MCP auto-config.');
+  }else if(tracker!=='None / later')console.log('Selected tracker: '+tracker+' — requires separate supported provider adapter/authentication; mark Not Verified until tested.');
   if(agent==='Claude Code'||agent==='Both')console.log('Claude Code provider MCP: follow setup guide; verify actual CLI and OAuth before use.');
   console.log('\nSETUP COMPLETE (configuration only; integration unverified).');
   console.log('Next: open product repo; use pilot-recorder, then setup-puen-stack. Log events under docs/pilot/.');

@@ -4,6 +4,8 @@
 
 [English](./README.md) · [รายการ Skills](../skills/README.md) · [Accepted Workflows — puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
 
+**Bootstrap หลัก:** ใช้ `npm run setup` เพื่อเลือก Agent, Tracker, Git Hosting และ Skill Scope (Global/Project). คู่มือด้านล่างเป็น Manual/Skill-only fallback; ไม่บังคับ Plane หรือ GitLab.
+
 ## Quick start — ใช้ Script ติดตั้ง (แนะนำ)
 
 ติดตั้ง **Node.js 18+** และ Clone Repo ที่ตรวจสอบแล้วก่อน ใช้คำสั่งเดียวกันได้ทั้ง Windows PowerShell และ macOS/Linux (บน Windows จะใช้ `node .\\scripts\\setup.mjs` ก็ได้):

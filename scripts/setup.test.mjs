@@ -15,7 +15,7 @@ function fixture(t) {
   const src = path.join(root, 'bundle');
   fs.mkdirSync(path.join(src, 'scripts'), { recursive: true });
   fs.copyFileSync(SOURCE, path.join(src, 'scripts/setup.mjs'));
-  for (const name of ['git-commit', 'gitlab-draft-mr', 'setup-puen-stack', 'work-item-runner', 'codebase-explore', 'verify-work-item', 'review-change']) {
+  for (const name of ['git-commit', 'git-draft-pr', 'gitlab-draft-mr', 'pilot-recorder', 'setup-puen-stack', 'work-item-runner', 'codebase-explore', 'verify-work-item', 'review-change']) {
     const folder = path.join(src, 'skills', name);
     fs.mkdirSync(folder, { recursive: true });
     fs.writeFileSync(path.join(folder, 'SKILL.md'), '---\nname: '+name+'\ndescription: synthetic\n---\n\n# '+name+'\n');
@@ -44,7 +44,7 @@ test('user-global links both agents; repeat install is idempotent', t => {
   assert.equal(fs.readdirSync(f.home).length,0);
   const install=f.run('--yes'); ok(install); assert.match(install.stdout,/Installed 14 dest/);
   for(const agent of ['.agents/skills','.claude/skills']) {
-    for(const name of ['git-commit','gitlab-draft-mr','setup-puen-stack','work-item-runner','codebase-explore','verify-work-item','review-change']){
+    for(const name of ['git-commit','git-draft-pr','gitlab-draft-mr','pilot-recorder','setup-puen-stack','work-item-runner','codebase-explore','verify-work-item','review-change']){
       const d=path.join(f.home,agent,name);
       assert.equal(fs.lstatSync(d).isSymbolicLink(),true);
       assert.match(fs.readFileSync(path.join(d,'SKILL.md'),'utf8'),new RegExp('name: '+name));
@@ -183,4 +183,20 @@ test('wizard: explicit CLI still works, and --wizard cannot be mixed with --yes'
   const bad=f.run('--wizard','--yes');
   assert.notEqual(bad.status,0);
   assert.equal(fs.readdirSync(f.project).length,0);
+});
+
+test('bootstrap: check and dry-run have no side effects', () => {
+  const root = new URL('../', import.meta.url);
+  const script = new URL('./bootstrap.mjs', import.meta.url);
+  for (const flag of ['--check','--dry-run']) {
+    const r = spawnSync(process.execPath,[script.pathname,flag],{cwd:new URL('.',root).pathname,encoding:'utf8',timeout:15000});
+    assert.equal(r.status,0,r.stderr);
+  }
+});
+test('bootstrap: user-choice providers and project scope are present', () => {
+  const script = fs.readFileSync(new URL('./bootstrap.mjs',import.meta.url),'utf8');
+  assert.match(script,/Plane Cloud.*Jira.*GitHub Issues/);
+  assert.match(script,/GitHub.*GitLab.*None/);
+  assert.match(script,/Existing project repository path/);
+  assert.match(script,/--scope','project'/);
 });
