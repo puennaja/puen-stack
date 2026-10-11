@@ -1,8 +1,35 @@
 # puen-stack — Codex + Claude Code setup (v0.1 draft)
 
-**Purpose:** Install **one versioned source** of the `git-commit` and `gitlab-draft-mr` skills for local Codex and Claude Code, and explicitly configure **least-privilege** Git and GitLab access. This is an **operator-run guide**, not an installer, automated credential setup or permission grant.
+**Purpose:** Use the local [setup installer](../scripts/setup.mjs) to install shared `git-commit`, `gitlab-draft-mr` and `setup-puen-stack` skills for Codex/Claude. This **operator-run guide** also explains manual permissions and GitLab prerequisites. The installer never creates credentials or opens access.
 
 [ภาษาไทย](./README.th.md) · [Skill index](../skills/README.md) · [puen-engineer Accepted workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows)
+
+## Quick start — recommended setup script
+
+**Requires Node.js 18+ and a reviewed clone** of this repository. Both macOS/Linux shells and Windows PowerShell can run the **same** commands (Windows may use `node .\\scripts\\setup.mjs`):
+
+```bash
+git clone https://github.com/puennaja/puen-stack.git
+cd puen-stack
+node scripts/setup.mjs --dry-run
+node scripts/setup.mjs --yes
+node scripts/setup.mjs --check --doctor
+```
+
+By default this installs **all bundled Skills for both agents at user scope** using symlink/Junction targets: `~/.agents/skills` and `~/.claude/skills`. It **does not overwrite** existing installations; when conflicts exist, it stops before making changes. It **does not** perform `git pull`, configure tokens, grant permissions, edit agent settings, Push, create MRs, or deploy. Review the plan before using `--yes`. Without `--yes` on an interactive terminal it asks for confirmation.
+
+```bash
+node scripts/setup.mjs --list
+node scripts/setup.mjs --agent codex --skill git-commit --dry-run
+node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
+node --test scripts/setup.test.mjs
+```
+
+Project installs **require an explicit `--project` path** and default to **copy** (not shared live links). Repeated runs detect identical installations; modified copies are not overwritten. Project-local `.agents/` or `.claude/` may appear in that project's Git status; review before committing. To use shared links in a project, pass `--mode link` intentionally.
+
+After installing, open the target repo in Codex/Claude and ask: **“Use `setup-puen-stack` to inspect this repository's existing AGENTS.md, branch rules, tracker and permission prerequisites. Show proposals before editing.”** The interactive Skill cannot grant its own permissions.
+
+**Test status:** installer logic was exercised locally with synthetic fixtures. Runtime discovery on actual installed Codex/Claude, Windows Junction behavior, GitLab login and real-project permission enforcement still require a separate pilot.
 
 ## 0. Boundaries and prerequisites
 
@@ -26,9 +53,9 @@ git status --short --branch
 
 If already cloned, inspect local modifications before a **manual** `git pull --ff-only`. **Do not overwrite an existing checkout**. For production use, pin or review the approved commit rather than pulling the latest Skill blindly.
 
-## 2. Install the same skills in both agents
+## 2. Manual link / Junction installation (fallback if not using the setup script)
 
-Both agents can discover a `SKILL.md` **only from their configured discovery locations**. Keep the canonical `SKILL.md` in `puen-stack/skills/<name>/`; link folders for each agent. This avoids two conflicting versions.
+**Prefer the automated Quick start above.** The steps below are optional manual alternatives. Both agents can discover a `SKILL.md` **only from their configured discovery locations**. Keep the canonical `SKILL.md` in `puen-stack/skills/<name>/`; link folders for each agent. This avoids two conflicting versions.
 
 **macOS/Linux:** after reviewing existing directories and confirming none of these destinations exist:
 
@@ -117,7 +144,7 @@ This is a **prompting aid**, not guaranteed prevention of equivalent actions via
 | Mark Ready / Merge | **Human only** | GitLab protected/reviewer policies |
 | Production Deploy / Recovery | **No AI permission in v0.1** | Separate human and operational release/incident policy |
 
-**Minimum validation (before real adoption):** check `SKILL.md` appears in both agents, agent reads the correct source, synthetic [Commit tests](../skills/git-commit/TESTS.md) and [Draft MR tests](../skills/gitlab-draft-mr/TESTS.md) are **actually run**, and the agent **stops** for unrelated changes, unapproved Push/MR, wrong branch/host and missing required checks. Record results; tests are **not run yet**.
+**Minimum validation (before real adoption):** Run `node --test scripts/setup.test.mjs` from the cloned `puen-stack`, and  check `SKILL.md` appears in both agents, agent reads the correct source, synthetic [Commit tests](../skills/git-commit/TESTS.md) and [Draft MR tests](../skills/gitlab-draft-mr/TESTS.md) are **actually run**, and the agent **stops** for unrelated changes, unapproved Push/MR, wrong branch/host and missing required checks. Record results; tests are **not run yet**.
 
 ## 6. Source references / limitations
 
