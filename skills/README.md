@@ -6,7 +6,7 @@ A Skill has one **English `SKILL.md` entrypoint**, shared by Codex and Claude. N
 
 | Skill | When to use | Skill (EN) | Test scenarios |
 | --- | --- | --- | --- |
-| **git-commit** | Review or create a scoped **local** commit, without auto-push | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
+| **git-commit** | Scoped **local** commit; default message `[<subtask-id>] feat: <summary>` (repo convention overrides) | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
 | **gitlab-draft-mr** | Propose a GitLab Draft MR and require human approval for **each** source/target pair | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
 | **setup-puen-stack** | Inspect a repo and guide a human through tracker, Git flow and permission readiness | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
 
