@@ -11,15 +11,17 @@
 ```bash
 git clone https://github.com/puennaja/puen-stack.git
 cd puen-stack
-node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --yes
+node scripts/setup.mjs
 node scripts/setup.mjs --check --doctor
 ```
 
-By default this installs **all bundled Skills for both agents at user scope** using symlink/Junction targets: `~/.agents/skills` and `~/.claude/skills`. It **does not overwrite** existing installations; when conflicts exist, it stops before making changes. It **does not** perform `git pull`, configure tokens, grant permissions, edit agent settings, Push, create MRs, or deploy. Review the plan before using `--yes`. Without `--yes` on an interactive terminal it asks for confirmation.
+With **no arguments**, the interactive Wizard asks **Global vs Project**, **Codex / Claude / Both**, **which Skills** and **Link vs Copy**. It then automatically runs a **Dry-run preview** showing exact installation destinations and asks for confirmation before writing. The default is **Global + Both + All Skills + Link**, with symlink/Junction destinations `~/.agents/skills` and `~/.claude/skills`. Project scope requires an existing path and defaults to **Copy**. Quit/cancel before confirmation without changes.
+
+To use non-interactive CLI/Automation, specify flags such as `--dry-run`, `--scope project --project <path> --agent codex --yes`, or `--check`. **No-argument execution requires a terminal**; it will not silently install in CI. The installer **does not overwrite** existing Skills, and **does not** run `git pull`, configure tokens, grant permissions, edit agent settings, Push, create MRs or deploy.
 
 ```bash
 node scripts/setup.mjs --list
+node scripts/setup.mjs --dry-run
 node scripts/setup.mjs --agent codex --skill git-commit --dry-run
 node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
 node --test scripts/setup.test.mjs
