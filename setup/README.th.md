@@ -1,8 +1,35 @@
 # puen-stack — คู่มือ Setup Codex + Claude Code (v0.1 Draft)
 
-**เป้าหมาย:** ให้ Codex และ Claude ใช้ **Skill Source เดียวกัน** จาก `puen-stack` แล้วตั้งค่าการเข้าถึง Git/GitLab แบบ **Least Privilege** คู่มือนี้ต้องให้เจ้าของเครื่องทำเอง **ไม่ใช่ Script ที่รันเองหรืออนุมัติ Permission อัตโนมัติ**
+**เป้าหมาย:** ติดตั้ง Skills ของ Codex/Claude จาก `puen-stack` ด้วย [Setup Script](../scripts/setup.mjs) ตัวเดียว แล้วตรวจสิทธิ์ Git/GitLab แบบ **Least Privilege** การรัน Script ต้องให้เจ้าของเครื่องยืนยันเอง และ **ไม่ใช่การอนุมัติ Permission / GitLab Login อัตโนมัติ**
 
 [English](./README.md) · [รายการ Skills](../skills/README.md) · [Accepted Workflows — puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
+
+## Quick start — ใช้ Script ติดตั้ง (แนะนำ)
+
+ติดตั้ง **Node.js 18+** และ Clone Repo ที่ตรวจสอบแล้วก่อน ใช้คำสั่งเดียวกันได้ทั้ง Windows PowerShell และ macOS/Linux (บน Windows จะใช้ `node .\\scripts\\setup.mjs` ก็ได้):
+
+```bash
+git clone https://github.com/puennaja/puen-stack.git
+cd puen-stack
+node scripts/setup.mjs --dry-run
+node scripts/setup.mjs --yes
+node scripts/setup.mjs --check --doctor
+```
+
+ค่าเริ่มต้นติดตั้ง **Skills ทั้งหมดให้ Codex + Claude แบบ User Scope** โดย Link จาก Source กลางไปที่ `~/.agents/skills` และ `~/.claude/skills` (Windows ใช้ Junction) สามารถรันซ้ำได้ ถ้ามี Skill ชื่อเดิมแต่เนื้อหาไม่ตรงกัน **Script จะหยุดโดยไม่ทับหรือลบไฟล์** ต้องตรวจ Plan ก่อนเลือก `--yes`; หากรันแบบ Interactive โดยไม่ใช้ `--yes` จะถามยืนยัน
+
+```bash
+node scripts/setup.mjs --list
+node scripts/setup.mjs --agent codex --skill git-commit --dry-run
+node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
+node --test scripts/setup.test.mjs
+```
+
+กรณี **Project Scope** ต้องระบุ `--project` ชัดเจน ค่าเริ่มต้นจะ **Copy** Skills ไปในโปรเจกต์ (ไม่ใช่ Link Source กลาง) และตรวจว่ารันซ้ำไม่ทับไฟล์ที่แก้เอง หากจะ Link Source กลางใน Project ให้เลือก `--mode link` เอง ระวัง `.agents/` / `.claude/` ปรากฏใน Git Status
+
+เมื่อติดตั้งแล้ว เปิด Repo งานจริงด้วย Codex/Claude และสั่ง: **“ใช้ Skill `setup-puen-stack` ตรวจ AGENTS.md, Git Flow, Issue Tracker และ Permission ที่จำเป็นของ Repo นี้ เสนอแผนก่อนแก้ไฟล์”** Skill นี้ช่วยถามและตรวจให้ แต่ไม่ได้เปิด Permission เอง
+
+**สถานะ Test:** ทดสอบ Installer Logic กับ Synthetic Fixtures ภายในเครื่องแล้ว ส่วนการค้นพบ Skill บน Codex/Claude ที่ติดตั้งจริง, Junction บน Windows, GitLab Login และ Permission ของ Repo งานจริง **ยังต้อง Pilot แยก**
 
 ## 0. เตรียมก่อน
 
@@ -26,9 +53,9 @@ git status --short --branch
 
 ถ้ามี Repo อยู่แล้ว **ห้าม Clone ทับ** ตรวจ Local Changes ก่อน `git pull --ff-only` ด้วยตัวเอง หากใช้กับงานจริงให้ Review/Pinned Commit ก่อนอัปเดต Skills
 
-## 2. ติดตั้ง Skill ให้ Codex และ Claude อ่าน Source เดียวกัน
+## 2. ติดตั้งด้วยมือ (Fallback เมื่อไม่ได้ใช้ Script)
 
-Canonical Skill อยู่ `puen-stack/skills/<name>/SKILL.md` **ภาษาอังกฤษเท่านั้น** เพื่อให้ Codex กับ Claude อ่าน Source เดียวกัน ส่วนคู่มือ Setup มีทั้งไทย/อังกฤษ
+**แนะนำให้ใช้ Setup Script ข้างบนก่อน** ส่วนนี้เป็นทางเลือกติดตั้งด้วยมือ Canonical Skill อยู่ `puen-stack/skills/<name>/SKILL.md` **ภาษาอังกฤษเท่านั้น** เพื่อให้ Codex กับ Claude อ่าน Source เดียวกัน ส่วนคู่มือ Setup มีทั้งไทย/อังกฤษ
 
 **macOS/Linux:** ตรวจว่า Destination ยังไม่ใช้งาน ก่อนสร้าง Symlink
 
@@ -119,7 +146,7 @@ Rules ข้างบน **ช่วยให้ถามก่อนรัน�
 
 ## 6. Validation ก่อนใช้กับโปรเจกต์จริง
 
-ให้ตรวจว่า Skill ถูกค้นพบใน Codex/Claude และอ่านไฟล์ `puen-stack` จริง ทดลอง [Commit Test Scenarios](../skills/git-commit/TESTS.md) และ [Draft MR Test Scenarios](../skills/gitlab-draft-mr/TESTS.md) ใน **Disposable Synthetic Repo + Mock GitLab API** ต้องเห็นว่า Agent หยุดก่อน Unrelated Changes, Push/MR ที่ไม่อนุมัติ, Wrong Host/Target และ Failed Required Checks แล้วบันทึกผลจริงว่า Pass/Fail/Not run **ตอนนี้ยังไม่ได้รัน Tests**
+เริ่มด้วย `node --test scripts/setup.test.mjs` เพื่อทดสอบ Installer ก่อน แล้วให้ตรวจว่า Skill ถูกค้นพบใน Codex/Claude และอ่านไฟล์ `puen-stack` จริง ทดลอง [Commit Test Scenarios](../skills/git-commit/TESTS.md) และ [Draft MR Test Scenarios](../skills/gitlab-draft-mr/TESTS.md) ใน **Disposable Synthetic Repo + Mock GitLab API** ต้องเห็นว่า Agent หยุดก่อน Unrelated Changes, Push/MR ที่ไม่อนุมัติ, Wrong Host/Target และ Failed Required Checks แล้วบันทึกผลจริงว่า Pass/Fail/Not run **ตอนนี้ยังไม่ได้รัน Tests**
 
 Official Docs: [Codex Skills](https://developers.openai.com/codex/skills) · [Codex Config](https://developers.openai.com/codex/config-basic) · [Claude Skills](https://code.claude.com/docs/en/skills) · [Claude Permissions](https://code.claude.com/docs/en/settings) · [GitLab CLI Auth](https://docs.gitlab.com/cli/authentication/) · [Draft MR](https://docs.gitlab.com/cli/mr/create/)
 
