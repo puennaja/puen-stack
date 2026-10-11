@@ -13,34 +13,45 @@ codex
 
 **Upgrade** ให้ใช้วิธีตรงกับ Installation เดิม; ถ้าใช้ npm global และเคยเจอ `EACCES` อย่าฝืน `sudo npm install -g`: ตั้ง npm prefix ใน Home หรือใช้ Node version manager แล้วจึงอัปเดตตามคำแนะนำ Codex
 
-## 2. สำรอง Configuration เดิม
+## 2. สำรองและแยก Profile ตาม Codex 0.134.0+
+
+ตั้งแต่ Codex **0.134.0** `--profile` ใช้ `~/.codex/<profile>.config.toml` แทน legacy `[profiles.<profile>]` และ top-level `profile = "..."` ใน `~/.codex/config.toml`. ดู [Official Profile Docs](https://developers.openai.com/codex/config-advanced#profiles)
 
 ```bash
 mkdir -p ~/.codex
 test -f ~/.codex/config.toml && cp ~/.codex/config.toml ~/.codex/config.toml.bak
 ```
 
-ผสานเฉพาะ Section ที่ยังไม่มีใน `~/.codex/config.toml`; ห้ามทับ MCP, auth หรือ sandbox config เดิม และอย่าใส่ Token/Secret ลง Repository
+ใน `~/.codex/config.toml` ให้ลบเฉพาะ top-level `profile = "fast"` (หรือ selector อื่น) และทุก legacy table `[profiles.fast]`, `[profiles.build]`, `[profiles.review]`, `[profiles.deep]` (รวม keys ของแต่ละ table) **อย่าลบ MCP, auth หรือ settings อื่น**. ถ้ามี profile legacy อื่น ให้ย้ายหรือจัดการทุกตัวก่อน เพื่อไม่ให้สับสนกับรูปแบบใหม่
+
+สร้างแต่ละไฟล์ที่ WSL2 Home:
 
 ```toml
-# Example only. Existing global settings take precedence where appropriate.
-[profiles.fast]
+# ~/.codex/fast.config.toml
 model = "gpt-6-luna"
 model_reasoning_effort = "low"
+```
 
-[profiles.build]
+```toml
+# ~/.codex/build.config.toml
 model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
+```
 
-[profiles.review]
+```toml
+# ~/.codex/review.config.toml
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
+```
 
-[profiles.deep]
+```toml
+# ~/.codex/deep.config.toml
 model = "gpt-6-astra"
 model_reasoning_effort = "high"
 ```
+
+แต่ละไฟล์ใช้ **top-level keys** ไม่ใส่ `[profiles.<name>]`. ไม่ commit secret หรือ user config ลง Repo; Model/Effort เป็นข้อเสนอให้ตรวจใน `/model` ทุกครั้ง หาก override จาก project configuration หรือ policy ให้ใช้ค่าที่ระบบแสดงจริง
 
 ## 3. ใช้ตาม Stage
 
