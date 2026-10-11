@@ -7,6 +7,7 @@ A Skill has one **English `SKILL.md` entrypoint**, shared by Codex and Claude. N
 | Skill | When to use | Skill (EN) | Test scenarios |
 | --- | --- | --- | --- |
 | **git-commit** | Scoped **local** commit; default message `[<subtask-id>] feat: <summary>` (repo convention overrides) | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
+| **git-draft-pr** | GitHub Draft PR only; verify remote, duplicate PR, exact head/base and separate push/PR approvals | [SKILL.md](./git-draft-pr/SKILL.md) | [TESTS](./git-draft-pr/TESTS.md) |
 | **gitlab-draft-mr** | Propose a GitLab Draft MR and require human approval for **each** source/target pair | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
 | **setup-puen-stack** | Inspect a repo and guide a human through tracker, Git flow and permission readiness | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
 | **work-item-runner** | Coordinate idea-to-outcome stages with bounded Plane Cloud read/write + human gates | [SKILL.md](./work-item-runner/SKILL.md) | [TESTS](./work-item-runner/TESTS.md) |
@@ -16,4 +17,4 @@ A Skill has one **English `SKILL.md` entrypoint**, shared by Codex and Claude. N
 
 **Pilot guide:** [Idea-to-outcome playbook](../playbooks/idea-to-outcome.md) / [ภาษาไทย](../playbooks/idea-to-outcome.th.md), plus [Plane Cloud OAuth write setup](../setup/plane-cloud.md). **Installation:** Use the [safe setup script](../scripts/setup.mjs) from a reviewed local clone. Run `node scripts/setup.mjs --dry-run` first, then `node scripts/setup.mjs --yes` if the plan is correct. [CLI manual](../scripts/README.md).
 
-**State:** All seven Skills remain **v0.1 Drafts pending live agent + Plane/GitLab evaluation**. Installing them does **not** grant GitLab tokens, Push, protected branch changes, Draft MR creation, Ready/Merge, CI bypass or production actions. Always follow actual [AGENTS.md](../AGENTS.md), [contribution guidance](../docs/CONTRIBUTING.md) and [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
+**State:** All eight skills remain **v0.1 Drafts pending live agent + Plane/GitLab evaluation**. Installing them does **not** grant GitLab tokens, Push, protected branch changes, Draft MR creation, Ready/Merge, CI bypass or production actions. Always follow actual [AGENTS.md](../AGENTS.md), [contribution guidance](../docs/CONTRIBUTING.md) and [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
