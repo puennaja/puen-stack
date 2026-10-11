@@ -6,7 +6,7 @@ Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอ�
 
 | Skill | ใช้เมื่อ | Skill (EN) | Test Scenarios |
 | --- | --- | --- | --- |
-| **git-commit** | เตรียม/Review/สร้าง Local Commit เฉพาะ Scoped Changes | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
+| **git-commit** | Local Commit แบบ Scoped พร้อม Template `[<subtask-id>] feat: <summary>` (ใช้ Repo Convention ก่อนเสมอ) | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
 | **gitlab-draft-mr** | เตรียม Draft MR และขอ Human Confirm **ทุก MR** | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
 | **setup-puen-stack** | ตรวจ Repo, Git Flow, Issue Tracker, AGENTS.md และสิทธิ์ก่อนใช้งานจริง | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
 
