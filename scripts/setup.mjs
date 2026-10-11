@@ -11,6 +11,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skillRoot = path.join(root, 'skills');
 const targetDirs = {codex: '.agents/skills', claude: '.claude/skills'};
 const help = `Usage: node scripts/setup.mjs [options]
+  (no arguments)            interactive setup wizard (TTY required)
+  --wizard                  launch setup wizard explicitly
   --agent both|codex|claude   default: both
   --scope user|project       default: user
   --project PATH             required with --scope project
@@ -20,10 +22,11 @@ const help = `Usage: node scripts/setup.mjs [options]
   --check                    inspect, do not write
   --doctor                   check CLI versions, no login or writes
   --list                     list bundled skills
-  --yes                      confirm without interactive prompt
+  --yes                      confirm non-interactively (CLI mode only)
   --help                     show help
 
 Examples:
+  node scripts/setup.mjs
   node scripts/setup.mjs --dry-run
   node scripts/setup.mjs --yes
   node scripts/setup.mjs --check --doctor
@@ -97,8 +100,82 @@ function doctor() {
   }
   console.log('Authentication, permissions and GitLab access were NOT checked.');
 }
-async function main() {
-  const o=options(process.argv.slice(2));
+
+// Wizard selection is isolated from file writes and supports deterministic tests.
+export async function wizardOptions(available, ask) {
+  async function choice(title, labels) {
+    while (true) {
+      console.log('\n' + title);
+      labels.forEach((v, i) => console.log('  ' + (i + 1) + ') ' + v));
+      const value = (await ask('Select [default 1, q to cancel]: ')).trim();
+      if (['q', 'quit', 'exit', 'cancel'].includes(value.toLowerCase())) throw Error('Setup cancelled. No files changed.');
+      if (!value) return 0;
+      if (/^\d+$/.test(value) && +value > 0 && +value <= labels.length) return +value - 1;
+      console.log('Invalid choice; select a listed number.');
+    }
+  }
+  console.log('\npuen-stack — Interactive Skill Setup');
+  const scope = (await choice('Step 1/4 — Install location', [
+    'Global — user-wide installation (recommended)',
+    'Project — a specific existing repository',
+  ])) === 0 ? 'user' : 'project';
+  let project = null;
+  if (scope === 'project') {
+    while (true) {
+      const answer = (await ask('Project path [q to cancel]: ')).trim();
+      if (['q', 'quit', 'exit', 'cancel'].includes(answer.toLowerCase())) throw Error('Setup cancelled. No files changed.');
+      if (!answer) { console.log('Project path is required.'); continue; }
+      const expanded = answer === '~' ? os.homedir() : answer.startsWith('~/') || answer.startsWith('~\\')
+        ? path.join(os.homedir(), answer.slice(2)) : answer;
+      const candidate = path.resolve(expanded);
+      if (!fs.existsSync(candidate) || !fs.statSync(candidate).isDirectory()) {
+        console.log('Not an existing directory: ' + candidate); continue;
+      }
+      project = candidate; break;
+    }
+  }
+  const agent = ['both','codex','claude'][await choice('Step 2/4 — Agents', [
+    'Both Codex and Claude (recommended)', 'Codex only', 'Claude only',
+  ])];
+  console.log('\nStep 3/4 — Skills to install');
+  available.forEach((name, i) => console.log('  ' + (i + 1) + ') ' + name));
+  let skill;
+  while (true) {
+    const answer = (await ask('Comma-separated numbers or all [default all, q to cancel]: ')).trim();
+    if (['q', 'quit', 'exit', 'cancel'].includes(answer.toLowerCase())) throw Error('Setup cancelled. No files changed.');
+    if (!answer || answer.toLowerCase() === 'all') { skill = available; break; }
+    const parts = answer.split(',').map(s => s.trim());
+    if (parts.every(p => /^\d+$/.test(p) && +p >= 1 && +p <= available.length)) {
+      skill = [...new Set(parts.map(p => available[+p - 1]))].sort(); break;
+    }
+    console.log('Invalid selection. Use all, or e.g. 1,3.');
+  }
+  const defMode = scope === 'user' ? 'link' : 'copy';
+  const mode = (await choice('Step 4/4 — Installation mode', [
+    defMode + ' (recommended)', defMode === 'link' ? 'copy' : 'link',
+  ])) === 0 ? defMode : (defMode === 'link' ? 'copy' : 'link');
+  return {scope,project,agent,skill,mode};
+}
+
+async function wizard() {
+  if (!process.stdin.isTTY || !process.stdout.isTTY) throw Error(
+    'Interactive wizard requires a terminal. Use --dry-run or explicit CLI flags in automation. Nothing changed.');
+  const rl = createInterface({input:process.stdin,output:process.stdout});
+  try {
+    const params=await wizardOptions(names(), msg => rl.question(msg));
+    const args=['--scope',params.scope,'--agent',params.agent,'--mode',params.mode];
+    if (params.project) args.push('--project',params.project);
+    for (const skill of params.skill) args.push('--skill',skill);
+    console.log('\nStep 5/5 — Dry-run preview; nothing has changed yet');
+    await main([...args,'--dry-run']);
+    const ok=(await rl.question('Install exactly the destinations shown above? [y/N]: ')).trim().toLowerCase();
+    if (!['y','yes'].includes(ok)) { console.log('Cancelled. No files changed.'); return; }
+    await main([...args,'--yes']);
+  } finally {rl.close();}
+}
+
+async function main(argv=process.argv.slice(2)) {
+  const o=options(argv);
   if(o.help){console.log(help);return;}
   const available=names();
   if(o.list){console.log(available.join('\n'));if(o.doctor)doctor();return;}
@@ -138,4 +215,12 @@ async function main() {
   console.log('No agent permissions, GitLab tokens, pushes, MRs, merges or deployments were changed.');
   console.log('Next: --check --doctor, then ask your agent to use setup-puen-stack.');
 }
-main().catch(e=>{console.error('Setup error: '+e.message);process.exitCode=1;});
+async function entry() {
+  const argv=process.argv.slice(2);
+  if (argv.length === 0 || (argv.length === 1 && argv[0] === '--wizard')) await wizard();
+  else await main(argv);
+}
+const currentFile=fileURLToPath(import.meta.url);
+if (process.argv[1] && path.resolve(process.argv[1]) === currentFile) {
+  entry().catch(e=>{console.error('Setup error: '+e.message);process.exitCode=1;});
+}
