@@ -28,7 +28,7 @@ git status --short --branch
 
 ## 2. ติดตั้ง Skill ให้ Codex และ Claude อ่าน Source เดียวกัน
 
-Canonical Skill อยู่ `puen-stack/skills/<name>/SKILL.md`; ภาษาไทยเป็น `SKILL.th.md` คู่กัน ไม่สร้าง Skill ซ้ำอีกตัว
+Canonical Skill อยู่ `puen-stack/skills/<name>/SKILL.md` **ภาษาอังกฤษเท่านั้น** เพื่อให้ Codex กับ Claude อ่าน Source เดียวกัน ส่วนคู่มือ Setup มีทั้งไทย/อังกฤษ
 
 **macOS/Linux:** ตรวจว่า Destination ยังไม่ใช้งาน ก่อนสร้าง Symlink
 
