@@ -46,6 +46,10 @@ Create **only files needed now**, not an empty folder tree for its own sake.
 
 Use actual timestamp/timezone when available; otherwise say `Time not captured`. User-reported resolution is marked as such, not independently verified. Never claim command/tests ran unless observed or backed by reliable provided logs.
 
+## Evaluation signals (optional and evidence-only)
+
+At meaningful pilot checkpoints, capture measured elapsed time, model/profile, token or monetary cost **only when a trustworthy meter exists**, review/rework cycles, human corrections, blockers and outcome evidence. If absent, record `Not measured` rather than inventing a baseline. Compare Work Item-level observations against the pilot goal; avoid treating one synthetic pass as proof of productivity. Propose specific skill/workflow changes with links to underlying worked/failed evidence, keeping raw logs concise and in the approved product pilot docs.
+
 ## Handoff and feedback
 
 Report exact files updated, key conclusions, blockers, and next safe step. For tooling fixes, propose a specific change in `puen-stack`; for accepted engineering policy, propose change in `puen-engineer`. Do not automatically push, merge, publish, or cross-write into other repositories.
