@@ -42,7 +42,7 @@ node scripts/setup.mjs --check --doctor
 
 - **[Canonical Playbook ภาษาไทย (puen-engineer)](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.th.md)** · [English](https://github.com/puennaja/puen-engineer/blob/master/playbooks/idea-to-outcome.md) · [Tooling Quickstart](./playbooks/idea-to-outcome.th.md)
 - **[Plane Cloud Setup แบบ OAuth + Write ภาษาไทย](./setup/plane-cloud.th.md)** · [English](./setup/plane-cloud.md)
-- **[รวม 9 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
+- **[รวม 13 Skills และ Test Scenarios ภาษาไทย](./skills/README.th.md)**
 
 ```bash
 # หลัง Clone Repo แล้ว
