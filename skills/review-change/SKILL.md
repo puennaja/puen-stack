@@ -33,6 +33,10 @@ Two modes:
 6. **Evidence-based risk triage:** tag findings `Blocking / Non-blocking / Question / Dismissed`; distinguish **Confirmed / Suspected / Unknown**. A suspicion requires a concrete failure mechanism and proposed proof, not a fabricated bug. For costly potential failures, ask for focused, safe verification through `verify-work-item`; this skill itself stays read-only.
 7. **Handoff:** recommend `Fix and reverify | Evidence needed | Eligible for Human Verification Gate | Blocked` only if formal entry was valid. A required missing proof stays a blocker. Record honest residual risk and who can decide.
 
+## Maintainability and implementation-character lens
+
+Besides correctness and blast radius, assess evidence-based engineering quality: clarity and naming; cohesive responsibilities; existing-code reuse; incidental duplication; avoidable branching and abstraction; speculative frameworks or unrelated refactors; test readability and behavior-focused assertions. Prefer minimal, idiomatic changes but never trade away domain correctness, security or authorized constraints for fewer lines. Anchor every finding in the actual diff, show the consequence and smallest useful fix; do not label personal style preferences as blockers when repository conventions permit both. Use the approved Work Item and `implementation` boundaries as the comparison baseline. If behavior is correct but simplicity can improve, mark the severity proportional to maintainability impact rather than inventing a failure.
+
 ## Reporting contract
 
 ```text
