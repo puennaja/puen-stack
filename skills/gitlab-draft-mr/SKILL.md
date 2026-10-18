@@ -7,11 +7,9 @@ description: Prepare or open one GitLab Draft Merge Request after inspecting rep
 
 **Purpose:** Prepare and, only with appropriate permissions and per-MR human confirmation, create **one GitLab Draft MR**. Does **not** grant network, Git credentials, API access or remote publication rights. See [tests](./TESTS.md) and [Accepted Implementation](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
 
-## Delivery ordering — canonical policy (2026-10-11)
+## Delivery ordering — canonical policy
 
-The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
-
-
+Follow the [Accepted Verification Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md) for the default pre-publication verification sequence and the human-approved remote-evidence exception. Before publishing, require the applicable verification decision or an explicit scoped exception; a separately authorized Push never implies Draft MR approval, and neither implies Ready, Merge or Deploy.
 ## Trigger & required inputs
 
 User requests a Draft MR. Identify the assigned, confirmed Plane/Jira/other Work Item, actual GitLab host/repository, source branch, **investigated** target branch, approved **Human Implementation Gate** evidence, actual publish authorization for the non-protected source branch, commits, MR contents and dependencies.
