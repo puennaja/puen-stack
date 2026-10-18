@@ -7,7 +7,7 @@ description: Use to define source-backed acceptance before coding, run honest de
 
 **Purpose:** Keep early verification planning distinct from executed developer tests and **Formal Independent Verification**. Follow [Accepted Verification v1.0](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md), [Implementation v1.0](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md) and the [Verification artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/verification.md).
 
-- [Manual test scenarios](./TESTS.md)
+- [Manual test scenarios](./TESTS.md) and [adversarial-review cases](./references/adversarial-review-tests.md)
 - This skill never declares a Work Item done, approves a Human Gate, or deploys.
 
 ## Delivery ordering — canonical policy
@@ -36,9 +36,13 @@ Before any live or side-effecting command, identify the **actual test target**, 
 1. Link the **assigned Work Item and parent Feature** from Plane/Jira/other source, exact acceptance version and approved in/out scope; verify relevant code revision, source and target repos.
 2. Build a requirement-to-check map with observable expected results **before reading current behavior as an oracle**. Name risky negative/boundary/data/permission cases. Scope shared integration scenarios to the responsible owner.
 3. Choose and execute checks for the selected mode under the preflight. Record exact command, environment/fixture, time, expected outcome, **actual stdout/exit code/test output evidence**, and `Pass | Fail | Not run | Blocked | Inconclusive`.
-4. For **formal verification**, use four independent nets proportionally: **requirement correctness; fixed diff/test quality review (via `review-change`); real behavior/integration proof; evidence quality and residual-risk judgment**. Green unit tests are entry evidence, never sufficient proof alone.
+4. For **formal verification**, use four independent nets proportionally: **requirement correctness; fixed diff/test quality review (using [adversarial review](./references/adversarial-review.md)); real behavior/integration proof; evidence quality and residual-risk judgment**. Green unit tests are entry evidence, never sufficient proof alone.
 5. If a finding changes code, return it to Implementation. After scoped fix, rerun the **affected developer checks** and repeat independent verification of the changed behavior. New material requirements or designs reopen only invalidated upstream decisions.
 6. Recommend `Verified for release review | Fix and reverify | Blocked | Stop/defer` with evidence and owners. **Only the authorized human makes the Work Item Verification Gate decision**; do not mark a parent Feature integrated or a Plane item Complete merely from passing tests.
+
+## Adversarial review procedure
+
+Perform a source-grounded, read-only challenge of the exact diff using [adversarial-review.md](./references/adversarial-review.md): lock the revision, establish an acceptance oracle independently, inspect relevant correctness/security/maintainability, trace blast radius and test quality, and triage findings with confidence and evidence. Use Preliminary mode before the Implementation Gate; Formal mode only after entry conditions. This review is a distinct evidence pass, not an independently qualified human reviewer merely because it lives in one Skill. Record the reviewer, evidence and what remained unreviewed. Return code changes to Implementation; rerun affected checks and review the new revision.
 
 ## Handoff table (to existing tracker/MR, not a new mandatory file)
 
