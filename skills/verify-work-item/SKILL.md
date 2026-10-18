@@ -10,11 +10,9 @@ description: Use to define source-backed acceptance before coding, run honest de
 - [Manual test scenarios](./TESTS.md)
 - This skill never declares a Work Item done, approves a Human Gate, or deploys.
 
-## Delivery ordering — canonical policy (2026-10-11)
+## Delivery ordering — canonical policy
 
-The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
-
-
+Use the [Accepted Verification Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md) as the authority for formal-entry conditions, sequencing, remote-evidence exceptions and re-verification after new CI/PR evidence. This skill may prepare acceptance checks early, but must not claim formal verification or a passed Human Verification Gate without the required observed evidence and human decision.
 ## Test-selection discipline
 
 Choose proof from the **change's observable surface** and risk instead of always requiring an E2E suite: fast unit/regression tests for local behavior, contract/integration checks for boundaries, UI checks for user-visible behavior and negative cases for meaningful failure modes. Explicitly name what each test would prove, its source-backed oracle, its environment and whether it actually ran. Distinguish developer-owned tests during `implementation` from the independent Formal Verification mode after human approval; do not manufacture a second author merely to claim independence. Verify tests can fail for the intended defect, not merely start the harness. If no unit-test seam exists, document justified alternate checks for Human Implementation Gate review.
