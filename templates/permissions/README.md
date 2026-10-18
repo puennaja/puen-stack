@@ -3,7 +3,7 @@
 Nothing in this directory grants GitHub/GitLab roles, installs credentials, or automatically changes local agent permissions.
 
 - Claude: manually merge [safe JSON](./claude/claude-safe.json) into **local** `.claude/settings.local.json`; [optional JSONC](./claude/claude-optional.jsonc) is reference text, not valid JSON until comments are removed. Local settings files should remain uncommitted.
-- Codex: manually merge [config TOML](./codex/config-safe.toml) into `~/.codex/config.toml`. Codex uses sandbox + approval settings rather than these Claude command patterns.
+- Codex: manually merge [config TOML](./codex/config-safe.toml) into `~/.codex/config.toml`. For a trusted repository, copy [project command rules](./codex/rules/project.rules) to `<repo>/.codex/rules/project.rules`; test with `codex execpolicy check --rules .codex/rules/project.rules -- git push origin feature/example`. These command rules are not account rights, a complete shell security boundary, or a replacement for AGENTS.md Human Gates.
 - Plane: follow [MCP setup](./plane/plane-mcp.md); OAuth != work-item write approval.
 - AGENTS.md: review [optional workflow policy](./notes/AGENTS-permission-policy.md), but it is guidance, not access control.
 
