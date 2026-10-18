@@ -1,0 +1,100 @@
+# My Engineer — Codex project command rules (draft)
+# Copy to <your-repo>/.codex/rules/project.rules in a trusted project.
+# Rules affect Codex command execution policy; NOT GitHub/GitLab account rights.
+# Prefixes are not a comprehensive shell firewall (wrappers, aliases, flags, scripts
+# and tool-specific operations can take different paths). Preserve Human Gates in AGENTS.md.
+#
+# Restrict risky operations, permit focused inspection/tests.
+# Never blanket-allow git, gh, glab, go, bash or powershell.
+
+# READ-ONLY GIT / GH / GITLAB
+prefix_rule(pattern = ["git", ["status", "diff", "log", "show"]], decision = "allow")
+prefix_rule(pattern = ["git", "branch", "--show-current"], decision = "allow")
+prefix_rule(pattern = ["git", "remote", "-v"], decision = "allow")
+prefix_rule(pattern = ["gh", "auth", "status"], decision = "allow")
+prefix_rule(pattern = ["gh", "repo", "view"], decision = "allow")
+prefix_rule(pattern = ["gh", "pr", ["list", "view", "checks", "diff"]], decision = "allow")
+prefix_rule(pattern = ["glab", "auth", "status"], decision = "allow")
+prefix_rule(pattern = ["glab", "mr", ["list", "view"]], decision = "allow")
+
+# GO (tests can still execute project code and have side effects;
+# verify target, fixture and network policy before running).
+prefix_rule(pattern = ["go", ["version", "env"]], decision = "allow")
+prefix_rule(pattern = ["go", ["test", "vet"]], decision = "allow")
+prefix_rule(
+    pattern = ["go", ["mod", "generate"]],
+    decision = "prompt",
+    justification = "Dependency changes or code generation can modify files or execute arbitrary generators. Check scope and diff.",
+)
+
+# LOCAL GIT WRITES: per-work-item scope and clean staged diff required.
+prefix_rule(
+    pattern = ["git", ["add", "commit", "restore", "reset", "rebase", "cherry-pick"]],
+    decision = "prompt",
+    justification = "Confirm exact Work Item, changes, staged content, local history and hooks before modifying Git state.",
+)
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Push publishes code and can trigger CI/CD or deployment. Require separately scoped human authorization for exact repo, branch and revision.",
+)
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f", "--force-with-lease"]],
+    decision = "forbidden",
+    justification = "History rewriting is disabled in this template. Use a normal scoped push or ask a human to handle an exceptional recovery.",
+)
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Destructive reset can discard local changes; use a non-destructive alternative.",
+)
+prefix_rule(
+    pattern = ["git", "clean", ["-fd", "-fdx", "-df", "-dfx"]],
+    decision = "forbidden",
+    justification = "Destructive clean may delete untracked work; review files manually instead.",
+)
+
+# GITHUB: each PR is separately authorized. A Push approval is not PR approval.
+prefix_rule(
+    pattern = ["gh", "pr", "create"],
+    decision = "prompt",
+    justification = "Explicit confirmation of repo, source, target, Draft state, body, reviewers and dependencies is required for each PR.",
+)
+prefix_rule(
+    pattern = ["gh", "pr", ["ready", "merge", "close"]],
+    decision = "prompt",
+    justification = "Ready/Merge/Close has team-visible and possibly production effects; require a separate human decision.",
+)
+
+# GITLAB: optional, useful when the target repo uses GitLab.
+prefix_rule(
+    pattern = ["glab", "mr", "create"],
+    decision = "prompt",
+    justification = "Confirm exact GitLab host, project, source/target and Draft MR separately for each request.",
+)
+prefix_rule(
+    pattern = ["glab", "mr", ["merge", "close"]],
+    decision = "prompt",
+    justification = "Merge or close can affect teams and release pipelines; require separate human approval.",
+)
+
+# OPTIONAL — opt in only when deliberately relaxing interactive tool prompts.
+# CAUTION: allow removes the command-level prompt for matching invocations;
+# a Git Push can trigger CI/CD/deploy, PR creation notifies reviewers,
+# and Merge may release to production. AGENTS.md Human Gates still apply.
+#
+# prefix_rule(pattern = ["git", "push"], decision = "allow")
+# prefix_rule(pattern = ["gh", "pr", "create"], decision = "allow")
+# prefix_rule(pattern = ["gh", "pr", "ready"], decision = "allow")
+# prefix_rule(pattern = ["gh", "pr", "merge"], decision = "allow")
+# prefix_rule(pattern = ["glab", "mr", "create"], decision = "allow")
+# prefix_rule(pattern = ["glab", "mr", "merge"], decision = "allow")
+#
+# IMPORTANT: The existing prompt rules above take precedence over any
+# commented-out allow replacements. To opt in, replace the matching prompt
+# rule instead of adding a duplicate allow; most restrictive decision wins.
+#
+# Verify decisions with your installed Codex version:
+# codex execpolicy check --rules .codex/rules/project.rules -- git status
+# codex execpolicy check --rules .codex/rules/project.rules -- git push origin feature/example
+# codex execpolicy check --rules .codex/rules/project.rules -- gh pr merge 123
