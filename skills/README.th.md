@@ -8,8 +8,7 @@ Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอ�
 | --- | --- | --- | --- |
 | **pilot-recorder** | เก็บ Setup/Experiment/Failure/Evidence ที่ `docs/pilot/` ใน Product Repo | [SKILL.md](./pilot-recorder/SKILL.md) | [TESTS](./pilot-recorder/TESTS.md) |
 | **git-commit** | Local Commit แบบ Scoped พร้อม Template `[<subtask-id>] feat: <summary>` (ใช้ Repo Convention ก่อนเสมอ) | [SKILL.md](./git-commit/SKILL.md) | [TESTS](./git-commit/TESTS.md) |
-| **git-draft-pr** | เปิด GitHub Draft PR หลังตรวจ Remote, Human Push/PR Confirm แยกกัน | [SKILL.md](./git-draft-pr/SKILL.md) | [TESTS](./git-draft-pr/TESTS.md) |
-| **gitlab-draft-mr** | เตรียม Draft MR และขอ Human Confirm **ทุก MR** | [SKILL.md](./gitlab-draft-mr/SKILL.md) | [TESTS](./gitlab-draft-mr/TESTS.md) |
+| **draft-change-request** | เตรียม GitHub Draft PR / GitLab Draft MR โดยตรวจ Provider และขอ Human Confirm สำหรับ Push และแต่ละ PR/MR แยกกัน | [SKILL.md](./draft-change-request/SKILL.md) | [TESTS](./draft-change-request/TESTS.md) |
 | **setup-puen-stack** | ตรวจ Repo, Git Flow, Issue Tracker, AGENTS.md และสิทธิ์ก่อนใช้งานจริง | [SKILL.md](./setup-puen-stack/SKILL.md) | [TESTS](./setup-puen-stack/TESTS.md) |
 | **work-item-runner** | รับ Idea, เดิน Workflow, อ่าน/เขียน Plane แบบ Scoped และติดตาม Human Gates | [SKILL.md](./work-item-runner/SKILL.md) | [TESTS](./work-item-runner/TESTS.md) |
 | **requirement-discovery** | สำรวจปัญหา Assumptions และ Acceptance เมื่อโจทย์ยังไม่ชัด (เรียกตามความเสี่ยง) | [SKILL.md](./requirement-discovery/SKILL.md) | [TESTS](./requirement-discovery/TESTS.md) |
@@ -25,6 +24,6 @@ Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอ�
 
 **ติดตั้งด้วย Script:** จาก `puen-stack` ที่ Clone และ Review แล้ว ใช้ `node scripts/setup.mjs --dry-run` เพื่อดูสิ่งที่จะติดตั้ง จากนั้น `node scripts/setup.mjs --yes` และ `node scripts/setup.mjs --check --doctor` เพื่อเช็กสถานะ อ่าน [คู่มือ Script](../scripts/README.md) และ [Setup Guide ไทย](../setup/README.th.md)
 
-**สถานะ:** Skills ทั้งสิบสองตัวยังเป็น **v0.1 Draft** ยังไม่ได้ยืนยันการใช้งานจริงร่วมกับ Codex/Claude/GitLab การติดตั้ง Skill **ไม่ให้ Permission Push, เปิด Draft MR, Merge, Deploy หรือเข้าถึง Production** อัตโนมัติ
+**สถานะ:** Skills ทั้งสิบเอ็ดตัวยังเป็น **v0.1 Draft** ยังไม่ได้ยืนยันการใช้งานจริงร่วมกับ Codex/Claude/GitLab การติดตั้ง Skill **ไม่ให้ Permission Push, เปิด Draft MR, Merge, Deploy หรือเข้าถึง Production** อัตโนมัติ
 
 หลักการกลางอยู่ที่ [AGENTS.md](../AGENTS.md) · [Contributing](../docs/CONTRIBUTING.md) และ Accepted Workflows อยู่ที่ [puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
