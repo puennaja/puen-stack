@@ -213,7 +213,7 @@ async function main(argv=process.argv.slice(2)) {
   console.log('Installed '+pending.length+' destinations. Reload Codex/Claude to discover skills.');
   if(o.scope==='project')console.log('Project-local Skills may show in git status. Review before committing.');
   console.log('No agent permissions, GitLab tokens, pushes, MRs, merges or deployments were changed.');
-  console.log('Next: --check --doctor, then ask your agent to use setup-puen-stack.');
+  console.log('Next: --check --doctor, then review setup/repository-readiness.md with your agent.');
 }
 async function entry() {
   const argv=process.argv.slice(2);
