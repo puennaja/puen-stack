@@ -17,8 +17,7 @@ Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอ�
 | **solution-design** | เปรียบเทียบ Design Options, Contracts และ Risks ก่อน Human Design Gate | [SKILL.md](./solution-design/SKILL.md) | [TESTS](./solution-design/TESTS.md) |
 | **delivery-planning** | วางแผน Whole Feature + Next Work Item โดยใช้ Vertical Slices | [SKILL.md](./delivery-planning/SKILL.md) | [TESTS](./delivery-planning/TESTS.md) |
 | **implementation** | เขียน Scoped Code ตาม Acceptance พร้อม Developer Checks และ Coding Character | [SKILL.md](./implementation/SKILL.md) | [TESTS](./implementation/TESTS.md) |
-| **verify-work-item** | Acceptance-first, Developer Checks และ Formal Verification ตาม Gate | [SKILL.md](./verify-work-item/SKILL.md) | [TESTS](./verify-work-item/TESTS.md) |
-| **review-change** | Independent Diff/Tests/Blast-radius Review | [SKILL.md](./review-change/SKILL.md) | [TESTS](./review-change/TESTS.md) |
+| **verify-work-item** | Acceptance-first, Developer Checks, Adversarial Review และ Formal Verification ตาม Gate | [SKILL.md](./verify-work-item/SKILL.md) | [TESTS](./verify-work-item/TESTS.md) |
 
 **Pilot Guide:** [จาก Idea จนจบทุก Stage ภาษาไทย](../playbooks/idea-to-outcome.th.md) และ [คู่มือ Plane Cloud Read/Write](../setup/plane-cloud.th.md)
 
@@ -26,6 +25,6 @@ Codex และ Claude ใช้ **Skill Entry Point `SKILL.md` ภาษาอ�
 
 **ติดตั้งด้วย Script:** จาก `puen-stack` ที่ Clone และ Review แล้ว ใช้ `node scripts/setup.mjs --dry-run` เพื่อดูสิ่งที่จะติดตั้ง จากนั้น `node scripts/setup.mjs --yes` และ `node scripts/setup.mjs --check --doctor` เพื่อเช็กสถานะ อ่าน [คู่มือ Script](../scripts/README.md) และ [Setup Guide ไทย](../setup/README.th.md)
 
-**สถานะ:** Skills ทั้งสิบสามตัวยังเป็น **v0.1 Draft** ยังไม่ได้ยืนยันการใช้งานจริงร่วมกับ Codex/Claude/GitLab การติดตั้ง Skill **ไม่ให้ Permission Push, เปิด Draft MR, Merge, Deploy หรือเข้าถึง Production** อัตโนมัติ
+**สถานะ:** Skills ทั้งสิบสองตัวยังเป็น **v0.1 Draft** ยังไม่ได้ยืนยันการใช้งานจริงร่วมกับ Codex/Claude/GitLab การติดตั้ง Skill **ไม่ให้ Permission Push, เปิด Draft MR, Merge, Deploy หรือเข้าถึง Production** อัตโนมัติ
 
 หลักการกลางอยู่ที่ [AGENTS.md](../AGENTS.md) · [Contributing](../docs/CONTRIBUTING.md) และ Accepted Workflows อยู่ที่ [puen-engineer](https://github.com/puennaja/puen-engineer/tree/master/workflows)
