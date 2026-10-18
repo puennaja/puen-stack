@@ -1,6 +1,6 @@
 # puen-stack — Codex + Claude Code setup (v0.1 draft)
 
-**Purpose:** Use the local [setup installer](../scripts/setup.mjs) to install shared `git-commit`, `gitlab-draft-mr` and `setup-puen-stack` skills for Codex/Claude. This **operator-run guide** also explains manual permissions and GitLab prerequisites. The installer never creates credentials or opens access.
+**Purpose:** Use the local [setup installer](../scripts/setup.mjs) to install shared `draft-change-request` and other active skills for Codex/Claude. This **operator-run guide** also explains manual permissions and GitLab prerequisites. The installer never creates credentials or opens access.
 
 [ภาษาไทย](./README.th.md) · [Skill index](../skills/README.md) · [puen-engineer Accepted workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows)
 
@@ -24,14 +24,14 @@ To use non-interactive CLI/Automation, specify flags such as `--dry-run`, `--sco
 ```bash
 node scripts/setup.mjs --list
 node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --agent codex --skill git-commit --dry-run
+node scripts/setup.mjs --agent codex --skill draft-change-request --dry-run
 node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
 node --test scripts/setup.test.mjs
 ```
 
 Project installs **require an explicit `--project` path** and default to **copy** (not shared live links). Repeated runs detect identical installations; modified copies are not overwritten. Project-local `.agents/` or `.claude/` may appear in that project's Git status; review before committing. To use shared links in a project, pass `--mode link` intentionally.
 
-After installing, open the target repo in Codex/Claude and ask: **“Use `setup-puen-stack` to inspect this repository's existing AGENTS.md, branch rules, tracker and permission prerequisites. Show proposals before editing.”** The interactive Skill cannot grant its own permissions.
+After installing, open the target repo in Codex/Claude and ask: **“Use repository readiness guide to inspect this repository's existing AGENTS.md, branch rules, tracker and permission prerequisites. Show proposals before editing.”** The interactive Skill cannot grant its own permissions.
 
 **Test status:** installer logic was exercised locally with synthetic fixtures. Runtime discovery on actual installed Codex/Claude, Windows Junction behavior, GitLab login and real-project permission enforcement still require a separate pilot.
 
@@ -67,7 +67,7 @@ If already cloned, inspect local modifications before a **manual** `git pull --f
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-for skill in git-commit gitlab-draft-mr setup-puen-stack work-item-runner codebase-explore verify-work-item review-change; do
+for skill in draft-change-request work-item-runner codebase-explore verify-work-item; do
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.agents/skills/$skill"
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.claude/skills/$skill"
 done
@@ -80,7 +80,7 @@ $source = Join-Path $HOME 'src\puen-stack\skills'
 $codexSkills = Join-Path $HOME '.agents\skills'
 $claudeSkills = Join-Path $HOME '.claude\skills'
 New-Item -ItemType Directory -Force -Path $codexSkills, $claudeSkills | Out-Null
-foreach ($name in @('git-commit', 'gitlab-draft-mr', 'setup-puen-stack', 'work-item-runner', 'codebase-explore', 'verify-work-item', 'review-change')) {
+foreach ($name in @('draft-change-request', 'work-item-runner', 'codebase-explore', 'verify-work-item')) {
   $target = Join-Path $source $name
   foreach ($root in @($codexSkills, $claudeSkills)) {
     $link = Join-Path $root $name
@@ -150,7 +150,7 @@ This is a **prompting aid**, not guaranteed prevention of equivalent actions via
 | Mark Ready / Merge | **Human only** | GitLab protected/reviewer policies |
 | Production Deploy / Recovery | **No AI permission in v0.1** | Separate human and operational release/incident policy |
 
-**Minimum validation (before real adoption):** Run `node --test scripts/setup.test.mjs` from the cloned `puen-stack`, and  check `SKILL.md` appears in both agents, agent reads the correct source, synthetic [Commit tests](../skills/git-commit/TESTS.md) and [Draft MR tests](../skills/gitlab-draft-mr/TESTS.md) are **actually run**, and the agent **stops** for unrelated changes, unapproved Push/MR, wrong branch/host and missing required checks. Record results; tests are **not run yet**.
+**Minimum validation (before real adoption):** Run `node --test scripts/setup.test.mjs` from the cloned `puen-stack`, and  check `SKILL.md` appears in both agents, agent reads the correct source, synthetic [Commit tests](../docs/procedures/local-commit-tests.md) and [Draft MR tests](../skills/draft-change-request/TESTS.md) are **actually run**, and the agent **stops** for unrelated changes, unapproved Push/MR, wrong branch/host and missing required checks. Record results; tests are **not run yet**.
 
 ## 6. Source references / limitations
 
