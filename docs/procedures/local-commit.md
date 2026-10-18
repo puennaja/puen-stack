@@ -1,7 +1,7 @@
 
-# git-commit — v0.1 Draft
+# Local commit procedure — archived from git-commit (v0.1 draft)
 
-**Purpose:** Safe, reviewable **local commits**, never remote publication. This skill is a procedure, not permission. See [synthetic tests](./local-commit-tests.md) and the [Accepted Implementation Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
+**Purpose:** Safe, reviewable **local commits**, never remote publication. This reusable procedure does not grant commit permission. See [synthetic tests](./local-commit-tests.md) and the [Accepted Implementation Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md).
 
 ## Trigger & inputs
 
@@ -41,7 +41,7 @@ Example messages:
 
 ### Branch naming context (not branch creation)
 
-The developer commonly uses `feature/<subtask>`-style branches (for example, `feature/PAY-1234` or `feature/PAY-1234-operation-log`). **Read the actual checked-out branch** and the repository Git Flow; do not assume an existing `feature/subtask` branch proves the issue ID, auto-rename/create branches, or guess `main`/`master` as an MR target. Branch naming and commit message are related but **separate policies**; changing branches is outside this local commit skill. An existing branch named `feature/subtask` remains unchanged until the responsible human approves any required rename.
+The developer commonly uses `feature/<subtask>`-style branches (for example, `feature/PAY-1234` or `feature/PAY-1234-operation-log`). **Read the actual checked-out branch** and the repository Git Flow; do not assume an existing `feature/subtask` branch proves the issue ID, auto-rename/create branches, or guess `main`/`master` as an MR target. Branch naming and commit message are related but **separate policies**; changing branches is outside this local commit procedure. An existing branch named `feature/subtask` remains unchanged until the responsible human approves any required rename.
 
 ## Procedure
 
