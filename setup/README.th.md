@@ -24,14 +24,14 @@ node scripts/setup.mjs --check --doctor
 ```bash
 node scripts/setup.mjs --list
 node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --agent codex --skill git-commit --dry-run
+node scripts/setup.mjs --agent codex --skill draft-change-request --dry-run
 node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes
 node --test scripts/setup.test.mjs
 ```
 
 กรณี **Project Scope** ต้องระบุ `--project` ชัดเจน ค่าเริ่มต้นจะ **Copy** Skills ไปในโปรเจกต์ (ไม่ใช่ Link Source กลาง) และตรวจว่ารันซ้ำไม่ทับไฟล์ที่แก้เอง หากจะ Link Source กลางใน Project ให้เลือก `--mode link` เอง ระวัง `.agents/` / `.claude/` ปรากฏใน Git Status
 
-เมื่อติดตั้งแล้ว เปิด Repo งานจริงด้วย Codex/Claude และสั่ง: **“ใช้ Skill `setup-puen-stack` ตรวจ AGENTS.md, Git Flow, Issue Tracker และ Permission ที่จำเป็นของ Repo นี้ เสนอแผนก่อนแก้ไฟล์”** Skill นี้ช่วยถามและตรวจให้ แต่ไม่ได้เปิด Permission เอง
+เมื่อติดตั้งแล้ว เปิด Repo งานจริงด้วย Codex/Claude และสั่ง: **“ใช้ Skill repository readiness guide ตรวจ AGENTS.md, Git Flow, Issue Tracker และ Permission ที่จำเป็นของ Repo นี้ เสนอแผนก่อนแก้ไฟล์”** Skill นี้ช่วยถามและตรวจให้ แต่ไม่ได้เปิด Permission เอง
 
 **สถานะ Test:** ทดสอบ Installer Logic กับ Synthetic Fixtures ภายในเครื่องแล้ว ส่วนการค้นพบ Skill บน Codex/Claude ที่ติดตั้งจริง, Junction บน Windows, GitLab Login และ Permission ของ Repo งานจริง **ยังต้อง Pilot แยก**
 
@@ -67,7 +67,7 @@ git status --short --branch
 
 ```bash
 mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-for skill in git-commit gitlab-draft-mr setup-puen-stack work-item-runner codebase-explore verify-work-item review-change; do
+for skill in draft-change-request work-item-runner codebase-explore verify-work-item; do
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.agents/skills/$skill"
   ln -s "$HOME/src/puen-stack/skills/$skill" "$HOME/.claude/skills/$skill"
 done
@@ -80,7 +80,7 @@ $source = Join-Path $HOME 'src\puen-stack\skills'
 $codexSkills = Join-Path $HOME '.agents\skills'
 $claudeSkills = Join-Path $HOME '.claude\skills'
 New-Item -ItemType Directory -Force -Path $codexSkills, $claudeSkills | Out-Null
-foreach ($name in @('git-commit', 'gitlab-draft-mr', 'setup-puen-stack', 'work-item-runner', 'codebase-explore', 'verify-work-item', 'review-change')) {
+foreach ($name in @('draft-change-request', 'work-item-runner', 'codebase-explore', 'verify-work-item')) {
   $target = Join-Path $source $name
   foreach ($root in @($codexSkills, $claudeSkills)) {
     $link = Join-Path $root $name
@@ -152,7 +152,7 @@ Rules ข้างบน **ช่วยให้ถามก่อนรัน�
 
 ## 6. Validation ก่อนใช้กับโปรเจกต์จริง
 
-เริ่มด้วย `node --test scripts/setup.test.mjs` เพื่อทดสอบ Installer ก่อน แล้วให้ตรวจว่า Skill ถูกค้นพบใน Codex/Claude และอ่านไฟล์ `puen-stack` จริง ทดลอง [Commit Test Scenarios](../skills/git-commit/TESTS.md) และ [Draft MR Test Scenarios](../skills/gitlab-draft-mr/TESTS.md) ใน **Disposable Synthetic Repo + Mock GitLab API** ต้องเห็นว่า Agent หยุดก่อน Unrelated Changes, Push/MR ที่ไม่อนุมัติ, Wrong Host/Target และ Failed Required Checks แล้วบันทึกผลจริงว่า Pass/Fail/Not run **ตอนนี้ยังไม่ได้รัน Tests**
+เริ่มด้วย `node --test scripts/setup.test.mjs` เพื่อทดสอบ Installer ก่อน แล้วให้ตรวจว่า Skill ถูกค้นพบใน Codex/Claude และอ่านไฟล์ `puen-stack` จริง ทดลอง [Commit Test Scenarios](../docs/procedures/local-commit-tests.md) และ [Draft MR Test Scenarios](../skills/draft-change-request/TESTS.md) ใน **Disposable Synthetic Repo + Mock GitLab API** ต้องเห็นว่า Agent หยุดก่อน Unrelated Changes, Push/MR ที่ไม่อนุมัติ, Wrong Host/Target และ Failed Required Checks แล้วบันทึกผลจริงว่า Pass/Fail/Not run **ตอนนี้ยังไม่ได้รัน Tests**
 
 Official Docs: [Codex Skills](https://developers.openai.com/codex/skills) · [Codex Config](https://developers.openai.com/codex/config-basic) · [Claude Skills](https://code.claude.com/docs/en/skills) · [Claude Permissions](https://code.claude.com/docs/en/settings) · [GitLab CLI Auth](https://docs.gitlab.com/cli/authentication/) · [Draft MR](https://docs.gitlab.com/cli/mr/create/)
 
