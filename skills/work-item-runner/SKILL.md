@@ -12,11 +12,9 @@ description: Use when a user provides a product idea, requirement, feature reque
 - [Manual acceptance scenarios](./TESTS.md)
 - Skill instructions are in English; user-facing notes can be Thai.
 
-## Delivery ordering — canonical policy (2026-10-11)
+## Delivery ordering — canonical policy
 
-The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
-
-
+Follow the [Accepted Verification Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md) and [Implementation Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/implementation.md) for the current delivery sequence, eligibility gates, remote-evidence exception and re-verification rules. This coordinator must not infer gate approval from tracker state. Push and each Draft PR/MR require separate scoped human authorization; never auto-merge or deploy.
 ## Trigger, operating modes and scope
 
 Use for "start from an idea", "run our pilot", "turn this requirement into a feature", "resume item XYZ", and stage-by-stage delivery. The unit is a **product/feature parent record** with independently owned **Work Items** once planned, not a fictional requirement document.
