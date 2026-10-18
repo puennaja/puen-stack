@@ -16,7 +16,7 @@ With **no arguments**, an interactive terminal wizard lets the user choose: **Gl
 By default in CLI mode (`--yes`, `--dry-run`, etc.), the installer discovers **every** `skills/<name>/SKILL.md` and makes user-global links for **Codex** (`~/.agents/skills`) and **Claude** (`~/.claude/skills`). Windows uses folder Junctions; macOS/Linux use symlinks. Nothing is overwritten. If another installation uses the same name, the entire plan stops before writes.
 
 ```bash
-node scripts/setup.mjs --list
+node scripts/setup.mjs --cleanup --dry-run\nnode scripts/setup.mjs --cleanup --yes\nnode scripts/setup.mjs --list
 node scripts/setup.mjs --wizard
 node scripts/setup.mjs --dry-run
 node scripts/setup.mjs --agent codex --skill draft-change-request --dry-run
@@ -31,3 +31,7 @@ node --test scripts/setup.test.mjs
 **Tests:** [setup.test.mjs](./setup.test.mjs) contains executable synthetic checks for repeated installs, permission-free inspection, scope/agent selection, wizard defaults/invalid choices/cancellation and conflicting paths; run with `node --test scripts/setup.test.mjs`. A local interactive terminal simulation also exercised the wizard's preview/confirmation behavior. Real Windows Junctions, installed Codex/Claude runtime discovery and GitLab/auth behavior are **not yet verified**.
 
 See [Setup Guide (English)](../setup/README.md) and [ภาษาไทย](../setup/README.th.md). Keep secrets and real company project data out of this public repository.
+
+## Safe cleanup of retired Skills
+
+Run `node scripts/setup.mjs --cleanup --dry-run` to preview the five retired Skill names (`review-change`, `git-draft-pr`, `gitlab-draft-mr`, `git-commit`, `setup-puen-stack`) in your selected global or project scope. Use `--agent codex|claude|both` and for project scope provide `--scope project --project PATH`. After reviewing the exact paths, run `--cleanup --yes` to unlink only verified symlinks/junctions that point to retired directories **in this exact puen-stack checkout**. No recursive deletion. Copied folders, custom folders, links to another checkout and unknown paths are never automatically removed. Check those manually after backing up your changes. Cleanup does not install new Skills; use the normal installer afterward. If the local checkout has moved since original installation, the link is intentionally skipped. Reload your agent after cleanup and installation.
