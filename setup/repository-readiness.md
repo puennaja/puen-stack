@@ -1,5 +1,5 @@
 
-# Setup puen-stack for a repository (v0.1 draft)
+# Repository readiness guide — archived from setup-puen-stack (v0.1 draft)
 
 **Purpose:** Interactive repository-specific readiness, complementary to [Bootstrap Wizard](../scripts/bootstrap.mjs) and [Skill Installer](../scripts/setup.mjs). This is **not** a permission-granting skill or an agent installer.
 
@@ -34,4 +34,4 @@ Present a concise summary: confirmed facts, specific missing owner/approval, min
 
 State **Ready for synthetic pilot / Needs setup / Blocked**, with evidence, owner, and smallest safe next action. For a declared pilot, invoke/recommend `pilot-recorder` and store meaningful setup events, problems, solutions and test evidence in the current product repo's `docs/pilot/` (or approved equivalent). Tracker comments are an index, not a replacement for logs.
 
-This v0.1 Skill has not been live-tested. Follow [TESTS.md](./repository-readiness-tests.md) and the [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
+This v0.1 guide has not been live-tested. Follow [readiness test scenarios](./repository-readiness-tests.md) and the [Accepted engineering workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows).
