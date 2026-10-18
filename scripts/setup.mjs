@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skillRoot = path.join(root, 'skills');
-const targetDirs = {codex: '.agents/skills', claude: '.claude/skills'};
+const targetDirs = {codex: '.agents/skills', claude: '.claude/skills'};\nconst retiredSkills = ['review-change','git-draft-pr','gitlab-draft-mr','git-commit','setup-puen-stack'];
 const help = `Usage: node scripts/setup.mjs [options]
   (no arguments)            interactive setup wizard (TTY required)
   --wizard                  launch setup wizard explicitly
@@ -18,7 +18,7 @@ const help = `Usage: node scripts/setup.mjs [options]
   --project PATH             required with --scope project
   --mode link|copy           default: link (user), copy (project)
   --skill NAME               install selected skill (repeatable)
-  --dry-run                  preview, do not write
+  --cleanup                  inspect retired puen-stack symlinks/junctions only\n  --dry-run                  preview, do not write
   --check                    inspect, do not write
   --doctor                   check CLI versions, no login or writes
   --list                     list bundled skills
@@ -27,15 +27,15 @@ const help = `Usage: node scripts/setup.mjs [options]
 
 Examples:
   node scripts/setup.mjs
-  node scripts/setup.mjs --dry-run
+  node scripts/setup.mjs --cleanup --dry-run\n  node scripts/setup.mjs --cleanup --yes\n  node scripts/setup.mjs --dry-run
   node scripts/setup.mjs --yes
   node scripts/setup.mjs --check --doctor
   node scripts/setup.mjs --scope project --project /your/repo --agent codex --yes
 `;
 function fail(message) { throw Error(message); }
 function options(argv) {
-  const o = {agent:'both',scope:'user',project:null,mode:null,skill:[],dryRun:false,check:false,doctor:false,list:false,yes:false,help:false};
-  const bool = {'--dry-run':'dryRun','--check':'check','--doctor':'doctor','--list':'list','--yes':'yes','--help':'help'};
+  const o = {agent:'both',scope:'user',project:null,mode:null,skill:[],dryRun:false,check:false,doctor:false,list:false,cleanup:false,yes:false,help:false};
+  const bool = {'--dry-run':'dryRun','--check':'check','--doctor':'doctor','--list':'list','--cleanup':'cleanup','--yes':'yes','--help':'help'};
   const args = {'--agent':'agent','--scope':'scope','--project':'project','--mode':'mode','--skill':'skill'};
   for(let i=0;i<argv.length;i++) {
     const k=argv[i];
@@ -53,7 +53,7 @@ function options(argv) {
   if(o.project&&o.scope!=='project')fail('--project requires --scope project');
   if(o.scope==='project'&&!o.project&&!o.help&&!o.list)fail('Explicit --project PATH is required');
   o.mode ||= o.scope==='user'?'link':'copy';
-  if(o.doctor)o.check=true;
+  if(o.doctor)o.check=true;\n  o.modeExplicit=argv.includes('--mode');
   return o;
 }
 function names() {
@@ -91,6 +91,49 @@ function status(src,dst,mode) {
   }
   if(mode==='copy'&&s.isDirectory()&&sameFiles(src,dst))return 'installed (copied)';
   return 'CONFLICT';
+}
+// Remove only provable links from this exact checkout. Copies and unknown sources stay untouched.
+function retiredLinkStatus(dst,name) {
+  if(!exists(dst))return 'absent';
+  const st=fs.lstatSync(dst);
+  if(!st.isSymbolicLink())return 'SKIP (not a link; possible copy/custom)';
+  const link=fs.readlinkSync(dst);
+  const actual=path.resolve(path.dirname(dst),link);
+  const expected=path.join(skillRoot,name);
+  // Compare paths lexically: retired targets often no longer exist, so realpathSync fails.
+  const norm=p=>process.platform==='win32'?path.normalize(p).toLowerCase():path.normalize(p);
+  if(norm(actual)!==norm(expected))return 'SKIP (link belongs to another source)';
+  return 'REMOVE (verified retired puen-stack link)';
+}
+async function cleanup(o) {
+  if(o.skill.length||o.modeExplicit)fail('--cleanup cannot be combined with --skill or --mode');
+  const agents=o.agent==='both'?['codex','claude']:[o.agent];
+  const base=o.scope==='user'?os.homedir():path.resolve(o.project);
+  if(!fs.existsSync(base)||!fs.statSync(base).isDirectory())fail('Destination root is not a directory: '+base);
+  const jobs=[];
+  for(const agent of agents)for(const name of retiredSkills){
+    const dst=path.join(base,targetDirs[agent],name);
+    jobs.push({agent,name,dst,state:retiredLinkStatus(dst,name)});
+  }
+  console.log('puen-stack retired Skill cleanup (verified links only):');
+  for(const j of jobs)console.log(' ['+j.state+'] '+j.agent+'/'+j.name+' -> '+j.dst);
+  if(o.dryRun||o.check){console.log('Cleanup preview only. Nothing changed.');return;}
+  const pending=jobs.filter(j=>j.state.startsWith('REMOVE'));
+  if(!pending.length){console.log('No verified retired links to remove. Copies/custom Skills require manual review.');return;}
+  if(!o.yes){
+    if(!process.stdin.isTTY||!process.stdout.isTTY)fail('Cleanup confirmation unavailable. Nothing changed; use --yes after dry-run.');
+    const ui=createInterface({input:process.stdin,output:process.stdout});
+    let response;
+    try{response=await ui.question('Remove exactly '+pending.length+' verified retired links? [y/N] ');}finally{ui.close();}
+    if(!['y','yes'].includes(response.trim().toLowerCase())){console.log('Cancelled. Nothing changed.');return;}
+  }
+  for(const j of pending){
+    // Recheck at action time, including source identity. Never recursively delete.
+    if(retiredLinkStatus(j.dst,j.name)!=='REMOVE (verified retired puen-stack link)')fail('Cleanup target changed; stop: '+j.dst);
+    fs.unlinkSync(j.dst);
+    console.log(' Removed retired link: '+j.agent+'/'+j.name);
+  }
+  console.log('Cleanup complete. Other Skills and copied directories were not removed.');
 }
 function doctor() {
   console.log('CLI diagnostics (no login):');
