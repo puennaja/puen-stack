@@ -127,6 +127,6 @@ try{
   }else if(tracker!=='None / later')console.log('Selected tracker: '+tracker+' — requires separate supported provider adapter/authentication; mark Not Verified until tested.');
   if(agent==='Claude Code'||agent==='Both')console.log('Claude Code provider MCP: follow setup guide; verify actual CLI and OAuth before use.');
   console.log('\nSETUP COMPLETE (configuration only; integration unverified).');
-  console.log('Next: open product repo; use pilot-recorder, then setup-puen-stack. Log events under docs/pilot/.');
+  console.log('Next: open product repo; use pilot-recorder, then review setup/repository-readiness.md. Log events under docs/pilot/.');
 }catch(err){console.error('Setup stopped: '+err.message);process.exitCode=1}
 finally{await rl?.close()}
