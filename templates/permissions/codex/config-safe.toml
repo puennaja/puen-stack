@@ -1,0 +1,13 @@
+# Merge manually into ~/.codex/config.toml; do not overwrite existing settings.
+# Sandbox/approval config, NOT per-command shell permission rules.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = false
+# OPTIONAL: enabling network allows network-capable sandboxed tasks; assess first.
+# network_access = true  # replace the false key above; do not duplicate it
+
+# DANGEROUS OPTIONAL settings; don't enable casually:
+# approval_policy = "never"          # suppresses agent approval prompts
+# sandbox_mode = "danger-full-access" # removes filesystem/network sandbox boundary

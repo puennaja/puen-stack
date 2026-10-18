@@ -1,0 +1,20 @@
+// OPTIONAL ONLY: comments make this INVALID JSON. Copy selected entries to allow manually.
+// Enabling a matching allow can bypass Claude's interactive tool permission prompt.
+{
+  "permissions": {
+    "allow": [
+      // "Bash(git add *)",        // stages files including possible secrets/unrelated changes
+      // "Bash(git commit *)",     // creates local commits
+      // "Bash(git push *)",       // publishes branch; may trigger CI/CD, notifications, deploy
+      // "Bash(gh pr create *)",   // opens public/team-visible PR; may not be Draft without workflow check
+      // "Bash(gh pr ready *)",    // marks Draft Ready, triggers reviewers/automation
+      // "Bash(gh pr merge *)",    // merges PR; may trigger production deployment
+      // "Bash(glab mr create *)", // opens GitLab MR and triggers CI/notifications
+      // "Bash(glab mr merge *)",  // merges GitLab MR; may trigger deployment
+      // "Bash(go mod tidy *)",    // changes go.mod/go.sum
+      // "Bash(go generate *)"     // executes project generators with arbitrary side effects
+    ]
+  }
+}
+// Do not use broad Bash(git *), Bash(gh *), Bash(*) rules.
+// Workflow Human Gates and repository protections still apply even if these are allowed.
