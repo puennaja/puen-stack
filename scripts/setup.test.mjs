@@ -200,3 +200,31 @@ test('bootstrap: user-choice providers and project scope are present', () => {
   assert.match(script,/Existing project repository path/);
   assert.match(script,/--scope','project'/);
 });
+
+
+test('cleanup preview never deletes a verified retired symlink',t=>{
+  const f=fixture(t);
+  const d=path.join(f.project,'.agents/skills/review-change');
+  fs.mkdirSync(path.dirname(d),{recursive:true});
+  fs.symlinkSync(path.join(f.root,'bundle/skills/review-change'),d,process.platform==='win32'?'junction':'dir');
+  const r=f.run(...projectArgs(f.project),'--agent','codex','--cleanup','--dry-run');
+  ok(r);assert.match(r.stdout,/REMOVE \(verified retired/);assert.equal(fs.lstatSync(d).isSymbolicLink(),true);
+});
+test('cleanup deletes only verified links after explicit yes',t=>{
+  const f=fixture(t);
+  const base=path.join(f.project,'.agents/skills');fs.mkdirSync(base,{recursive:true});
+  const own=path.join(base,'review-change');
+  fs.symlinkSync(path.join(f.root,'bundle/skills/review-change'),own,process.platform==='win32'?'junction':'dir');
+  const other=path.join(base,'git-commit');fs.mkdirSync(other);fs.writeFileSync(path.join(other,'keep.txt'),'custom');
+  const external=path.join(base,'git-draft-pr');fs.symlinkSync(f.project,external,process.platform==='win32'?'junction':'dir');
+  const r=f.run(...projectArgs(f.project),'--agent','codex','--cleanup','--yes');ok(r);
+  assert.equal(fs.existsSync(own),false);assert.equal(fs.existsSync(path.join(other,'keep.txt')),true);
+  assert.equal(fs.lstatSync(external).isSymbolicLink(),true);
+});
+test('cleanup in non-TTY without yes is denied',t=>{
+  const f=fixture(t),d=path.join(f.project,'.claude/skills/review-change');
+  fs.mkdirSync(path.dirname(d),{recursive:true});fs.symlinkSync(path.join(f.root,'bundle/skills/review-change'),d,process.platform==='win32'?'junction':'dir');
+  const r=f.run(...projectArgs(f.project),'--agent','claude','--cleanup');
+  assert.notEqual(r.status,0);assert.match(r.stderr,/Cleanup confirmation unavailable/);
+  assert.equal(fs.lstatSync(d).isSymbolicLink(),true);
+});
