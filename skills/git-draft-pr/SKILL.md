@@ -7,11 +7,9 @@ description: Prepare or create a GitHub Draft Pull Request for an approved work 
 
 Use for **GitHub Draft Pull Requests**. For GitLab, use `gitlab-draft-mr`. This procedure grants no GitHub credentials, write access, push authorization or human-gate approval.
 
-## Delivery ordering — canonical policy (2026-10-11)
+## Delivery ordering — canonical policy
 
-The accepted My Engineer default is **Developer Checks green → Human Implementation Gate → locally feasible Formal Independent Verification → Human Verification Gate → separately authorized scoped Push → separately confirmed Draft PR/MR**. Early/provisional feedback and acceptance-first test planning remain allowed. **Remote-evidence exception:** when required CI/preview/integration evidence cannot be obtained locally, a human may explicitly approve a narrowly scoped earlier Push and, if necessary, separately approve a Draft PR/MR; unexecuted checks remain Not run/Blocked, and the Verification Gate cannot be claimed passed until necessary remote evidence is observed and a human makes the decision. CI/PR review findings trigger appropriate scoped fixes, retesting, independent re-verification and refreshed human decision. Never auto-merge/deploy. Canonical upstream: https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md .
-
-
+Follow the [Accepted Verification Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md) for the default pre-publication verification sequence and the human-approved remote-evidence exception. Before publishing, require the applicable verification decision or an explicit scoped exception; a separately authorized Push never implies Draft PR approval, and neither implies Ready, Merge or Deploy.
 ## Trigger and inputs
 
 Use when asked to prepare/open a Draft PR. Obtain the real repository, existing work item (Plane ID/URL if applicable), exact source branch, investigated target branch, relevant commits, actual test evidence, approvals, PR description and dependencies. Respect repository `AGENTS.md`, CONTRIBUTING, and branch protection.
