@@ -42,7 +42,7 @@ test('user-global links both agents; repeat install is idempotent', t => {
   const f=fixture(t);
   ok(f.run('--dry-run'));
   assert.equal(fs.readdirSync(f.home).length,0);
-  const install=f.run('--yes'); ok(install); assert.match(install.stdout,/Installed 14 dest/);
+  const install=f.run('--yes'); ok(install); assert.match(install.stdout,/Installed 18 dest/);
   for(const agent of ['.agents/skills','.claude/skills']) {
     for(const name of ['git-commit','git-draft-pr','gitlab-draft-mr','pilot-recorder','setup-puen-stack','work-item-runner','codebase-explore','verify-work-item','review-change']){
       const d=path.join(f.home,agent,name);
