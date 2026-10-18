@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skillRoot = path.join(root, 'skills');
-const targetDirs = {codex: '.agents/skills', claude: '.claude/skills'};\nconst retiredSkills = ['review-change','git-draft-pr','gitlab-draft-mr','git-commit','setup-puen-stack'];
+const targetDirs = {codex: '.agents/skills', claude: '.claude/skills'};
+const retiredSkills = ['review-change','git-draft-pr','gitlab-draft-mr','git-commit','setup-puen-stack'];
 const help = `Usage: node scripts/setup.mjs [options]
   (no arguments)            interactive setup wizard (TTY required)
   --wizard                  launch setup wizard explicitly
@@ -53,7 +54,8 @@ function options(argv) {
   if(o.project&&o.scope!=='project')fail('--project requires --scope project');
   if(o.scope==='project'&&!o.project&&!o.help&&!o.list)fail('Explicit --project PATH is required');
   o.mode ||= o.scope==='user'?'link':'copy';
-  if(o.doctor)o.check=true;\n  o.modeExplicit=argv.includes('--mode');
+  if(o.doctor)o.check=true;
+    o.modeExplicit=argv.includes('--mode');
   return o;
 }
 function names() {
