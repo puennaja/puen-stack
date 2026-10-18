@@ -9,6 +9,7 @@ description: Prepare or create one GitHub Draft PR or GitLab Draft MR for an app
 
 - [GitHub adapter](./references/github.md) and [GitLab adapter](./references/gitlab.md)
 - [Manual acceptance scenarios](./TESTS.md)
+- [Scoped local-commit procedure](../../docs/procedures/local-commit.md) (separate from Push/Draft authority)
 - Canonical ordering, formal verification eligibility and remote-evidence exception: [Accepted Verification Workflow](https://github.com/puennaja/puen-engineer/blob/master/workflows/verification.md)
 
 ## Trigger and input
