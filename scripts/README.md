@@ -19,14 +19,14 @@ By default in CLI mode (`--yes`, `--dry-run`, etc.), the installer discovers **e
 node scripts/setup.mjs --list
 node scripts/setup.mjs --wizard
 node scripts/setup.mjs --dry-run
-node scripts/setup.mjs --agent codex --skill git-commit --dry-run
+node scripts/setup.mjs --agent codex --skill draft-change-request --dry-run
 node scripts/setup.mjs --scope project --project /your/repo --agent claude --yes
 node --test scripts/setup.test.mjs
 ```
 
 `--scope project` requires the explicitly specified path and uses **copy** by default. Re-runs are idempotent for matching copies/links. Modified local copies are not replaced. `--mode link` is available for a conscious shared-source project installation, but project-local paths may show in `git status`.
 
-**Safety boundaries:** `--yes` is confirmation **only for installation of Skill directories**, not approval to Push, create MRs, modify permissions, authenticate GitLab, enable network access or deploy. `--check`, `--doctor`, `--dry-run` and `--list` do not write files. A per-project conversational [setup-puen-stack Skill](../skills/setup-puen-stack/SKILL.md) can inspect existing policies and suggest changes, but cannot grant itself access.
+**Safety boundaries:** `--yes` is confirmation **only for installation of Skill directories**, not approval to Push, create MRs, modify permissions, authenticate GitLab, enable network access or deploy. `--check`, `--doctor`, `--dry-run` and `--list` do not write files. Use the [repository readiness guide](../setup/repository-readiness.md) to inspect existing policies before proposing changes; this does not grant access.
 
 **Tests:** [setup.test.mjs](./setup.test.mjs) contains executable synthetic checks for repeated installs, permission-free inspection, scope/agent selection, wizard defaults/invalid choices/cancellation and conflicting paths; run with `node --test scripts/setup.test.mjs`. A local interactive terminal simulation also exercised the wizard's preview/confirmation behavior. Real Windows Junctions, installed Codex/Claude runtime discovery and GitLab/auth behavior are **not yet verified**.
 
