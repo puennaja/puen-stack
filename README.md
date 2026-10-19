@@ -4,6 +4,8 @@
 
 Engineering Practices, Accepted Workflows และ Artifact Templates อยู่ที่ [puen-engineer](https://github.com/puennaja/puen-engineer) ส่วน Skills/Agent Setup/Tooling อยู่ที่นี่
 
+**Skill Architecture:** Specialized Skills ต้อง **Stateless + Standalone**; `work-item-runner` เป็นข้อยกเว้นสำหรับ orchestration เท่านั้น ([policy TH](./docs/architecture/skill-contract.th.md) / [EN](./docs/architecture/skill-contract.md)).
+
 ## Quickstart — เลือก Provider ได้ (Pilot)
 
 ```bash
