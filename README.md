@@ -33,6 +33,10 @@ node scripts/setup.mjs --check --doctor
 
 สำหรับ CLI/Automation ยังใช้ `node scripts/setup.mjs --dry-run` และ `node scripts/setup.mjs --scope project --project /path/to/repo --agent codex --yes` ได้เหมือนเดิม Script รองรับ Windows PowerShell/macOS/Linux และรันซ้ำได้โดย **ไม่ทับไฟล์เดิม** และ **ไม่เปิด GitLab/Agent Permissions เอง** หลังติดตั้งเรียก [Repository Readiness Guide](./setup/repository-readiness.md) เพื่อช่วยตรวจ AGENTS.md, Git Flow และ Permission ของ Repo งานจริง
 
+## รับงานจริง — Feature / Enhancement
+
+ใช้ [Real Work Prompt Template ภาษาไทย](./templates/real-work-feature-enhancement.th.md) หรือ [English](./templates/real-work-feature-enhancement.md) สำหรับรับ Jira/Plane Card และตรวจ Requirement → Discovery → Design → Planning → Implementation → Verification → Draft PR/MR โดยเริ่ม Assess แบบ **read-only** และรักษา Human Gates/Company Data Policies; อย่าเก็บข้อมูลบริษัทใน Public Repo นี้.
+
 ## Pilot จาก Idea → Feature → Outcome
 
 **Current Pilot Setup (2026-10-11):** Codex Profiles ตั้งค่าแล้ว, Skills ติดตั้งแบบ Global แล้ว (ยังต้องตรวจ Skill Discovery); Version Control ใช้ **Git** และ Pilot ปัจจุบันใช้ **GitHub Draft PR**; GitLab Draft MR เป็นทางเลือก ไม่ต้องติดตั้ง Skills ซ้ำหากค้นพบได้จริง
