@@ -18,7 +18,7 @@ Actual assigned Work Item and real tracker link or approved standalone scope; fe
 6. Inspect changed diff for domain invariants, errors, authorization, data safety, edge cases and accidental secrets. Execute relevant developer-owned unit/regression tests and required lint/build/typecheck, capturing command/environment/result. Never change assertions simply to silence genuine failures.
 7. If required checks fail, repair within approved scope and rerun; if checks cannot run, report Not run/Blocked. Do **not** begin Formal Independent Verification by claiming green.
 8. Give the human **Work-Item Implementation Gate** an evidence-linked diff, scope summary, passing/failed/not-run checks, contract risks, and proposed next step. Human decision remains Pending until approved. Return the verified implementation handoff artifact to the caller. Formal independent verification is a separate workflow responsibility that the runner or human may initiate after the gate; rework is scope-bounded and must be retested.
-9. Hand off milestone evidence through `work-item-runner`; use `pilot-recorder` for pilot observations rather than duplicating every tool call.
+9. Return milestone evidence, changed paths and the pending human decision as a self-contained handoff artifact. The caller may persist it in existing authorized project records; this skill does not require another skill to complete.
 
 ## Output / verification
 Changed files/hunks; why and what changed; actual commands and outcomes; tests/edge cases; untouched pre-existing work; unresolved risks; Implementation Gate decision source or Pending. Required developer checks must genuinely pass before Formal Independent Verification; unit-test exceptions need risk-grounded human agreement.
