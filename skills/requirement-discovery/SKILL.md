@@ -33,7 +33,7 @@ Wait. Do not ask a follow-up about the database before this decision is settled.
 4. Suggest a **smallest testable candidate scope**, non-goals and plausible observation or experiment. Do not choose architecture, promise features or split implementation tasks here.
 5. Play back the concise **single Discovery Summary** to the designated human: problem/users, evidence, outcome, candidate scope, assumptions, priority unknowns, owner and next action.
 6. Route to **technical explore / prototype / discover more / defer** using human decision evidence. Discovery validated for exploration does NOT imply design, implementation or gate approval.
-7. If using an authorized tracker, give the summary to `work-item-runner` for scoped update of the existing parent; never create one issue per question. For a pilot, call `pilot-recorder` at meaningful findings.
+7. Return the summary and decision ledger to the caller. If an authorized tracker write capability is directly available, update only the existing parent within approved scope; otherwise supply the proposed update as an output. Do not require or invoke another skill for tracker updates or pilot logging.
 
 ## Output and verification
 One summary or small existing-issue note; explicit source for every confirmation; prioritized open questions and named decision owner. Check that the summary doesn't turn guesses into acceptance. Record owner decision as Pending until genuine human confirmation; mark inaccessible evidence Blocked/Unknown.
