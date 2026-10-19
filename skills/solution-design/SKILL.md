@@ -19,7 +19,7 @@ Use confirmed outcome, scope, acceptance examples, `codebase-explore` findings o
 7. Present a **single Solution Design Summary** to the actual **feature-level Human Solution Design Gate**. Gate Pending until a human approves this specific design. An ADR is optional for long-lived consequential decisions, not automatic.
 
 ## Output and verification
-Goal/scope, evidence and sources, candidate options, chosen proposal (pending approval), trade-offs, contracts/data flow, verification/rollout risks, alternatives, open decisions and human decision source. Check traceability to original outcome and absence of unsupported claims. Handoff approved scope to `delivery-planning` through `work-item-runner`; reuse existing tracker/docs.
+Goal/scope, evidence and sources, candidate options, chosen proposal (pending approval), trade-offs, contracts/data flow, verification/rollout risks, alternatives, open decisions and human decision source. Check traceability to original outcome and absence of unsupported claims. Return an approved-or-pending design artifact to the caller for possible later planning; do not require `delivery-planning` or `work-item-runner` to complete this skill. Reuse existing authorized tracker/docs when available.
 
 ## Synthetic example
 Expense log: compare local-only persistence to service/database; identify multi-device sync as Unknown, not a guaranteed feature; human selects approach before planning.
