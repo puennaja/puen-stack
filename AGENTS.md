@@ -2,6 +2,8 @@
 
 Purpose: maintain reusable, vendor-neutral developer tooling and agent skills.
 
+**Skill architecture:** All specialist skills MUST be stateless and standalone; only `work-item-runner` may orchestrate other skills. See [Skill Contract](./docs/architecture/skill-contract.md). Specialist skills must not require another skill to run first; take explicit input artifacts instead.
+
 ## Rules
 - Read the relevant existing files before modifying them; make the smallest justified change.
 - Do not add dependencies or auto-executing scripts without explaining their purpose.
