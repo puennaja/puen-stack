@@ -39,7 +39,7 @@ Proposed next step: design / bounded spike / clarify / blocked
 Human decision: Pending or real approver/evidence
 ```
 
-Write this into the existing authorized Plane work item/comment through `work-item-runner` **only when scoped tracker write permission is confirmed**. Keep source code, exact company paths and private ticket contents in authorized private records, not in public puen-stack. Never invent evidence or change files from this read-only skill.
+Return a source-linked Technical Discovery summary directly to the caller. If direct tracker write is explicitly authorized and available, it may be saved to the existing Work Item; otherwise provide a manual update payload. Do not require another skill to persist it. Keep source code, exact company paths and private ticket contents in authorized private records, not in public puen-stack. Never invent evidence or change files from this read-only skill.
 
 **Stop conditions:** missing workspace scope, secrets/access constraints, critical inconsistent requirements, inaccessible producer contract, or missing human authority. Label the gap and ask for a targeted safe next step; do not compensate by guessing.
 
